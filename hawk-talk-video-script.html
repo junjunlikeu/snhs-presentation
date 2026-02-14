@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hawk Talk Video Script — Bingjun Li</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0a1628;
+    --blue: #1e3a5f;
+    --teal: #2a9d8f;
+    --gold: #e9c46a;
+    --coral: #e76f51;
+    --white: #f8f9fa;
+    --light: #e8ecf1;
+    --dim: #8899aa;
+    --card: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.08);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    line-height: 1.7;
+    padding: 40px 20px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .header .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 20px;
+    background: rgba(233,196,106,0.12);
+    border: 1px solid rgba(233,196,106,0.3);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .header h1 span { color: var(--gold); }
+  .header .meta {
+    font-size: 0.95rem;
+    color: var(--dim);
+    line-height: 1.8;
+  }
+  .header .meta strong { color: var(--light); }
+
+  /* Tip bar */
+  .tip-bar {
+    background: rgba(42,157,143,0.1);
+    border: 1px solid rgba(42,157,143,0.25);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+    font-size: 0.9rem;
+    color: var(--teal);
+  }
+  .tip-bar strong { color: #5ec4b6; }
+
+  /* Section */
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .section-header .number {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .section-header .time {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--dim);
+    background: rgba(255,255,255,0.05);
+    padding: 4px 14px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+
+  /* Script card */
+  .script-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .script-card::before {
+    content: '"';
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: rgba(233,196,106,0.15);
+    line-height: 1;
+  }
+  .script-card p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--light);
+    padding-left: 4px;
+  }
+  .script-card p + p {
+    margin-top: 12px;
+  }
+  .script-card .highlight { color: var(--gold); font-weight: 600; }
+  .script-card .highlight-teal { color: var(--teal); font-weight: 600; }
+
+  /* Color themes for sections */
+  .theme-gold .number { background: rgba(233,196,106,0.15); color: var(--gold); }
+  .theme-gold .script-card { border-left: 3px solid var(--gold); }
+  .theme-teal .number { background: rgba(42,157,143,0.15); color: var(--teal); }
+  .theme-teal .script-card { border-left: 3px solid var(--teal); }
+  .theme-coral .number { background: rgba(231,111,81,0.15); color: var(--coral); }
+  .theme-coral .script-card { border-left: 3px solid var(--coral); }
+  .theme-blue .number { background: rgba(74,144,217,0.15); color: #4a90d9; }
+  .theme-blue .script-card { border-left: 3px solid #4a90d9; }
+  .theme-white .number { background: rgba(255,255,255,0.1); color: var(--white); }
+  .theme-white .script-card { border-left: 3px solid rgba(255,255,255,0.3); }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+    margin: 48px 0;
+  }
+
+  /* Tips section */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .tips-grid .tip {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .tip .tip-icon {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+  .tip h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--light);
+  }
+  .tip p {
+    font-size: 0.85rem;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  /* Bullet points */
+  .bullet-card {
+    background: rgba(233,196,106,0.06);
+    border: 1px dashed rgba(233,196,106,0.25);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-top: 20px;
+  }
+  .bullet-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .bullet-card ol {
+    padding-left: 20px;
+  }
+  .bullet-card li {
+    font-size: 0.95rem;
+    color: var(--light);
+    padding: 4px 0;
+  }
+
+  /* Timeline bar */
+  .timeline-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 40px;
+  }
+  .timeline-bar .seg {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">Hawk Talk Application</div>
+  <h1>Informal <span>Video Script</span></h1>
+  <div class="meta">
+    <strong>Bingjun Li, M.S.Ed.</strong> &middot; 2–3 minutes &middot; Talking to camera<br>
+    Casual, authentic, reflective &middot; No slides needed
+  </div>
+</div>
+
+<div class="tip-bar">
+  <strong>Tip:</strong> Don't memorize this word-for-word. Read it a few times, then speak naturally from the key bullet points at the bottom. Small pauses and "ums" are totally fine — it's supposed to be informal.
+</div>
+
+<!-- Timeline -->
+<div class="timeline-bar">
+  <div class="seg" style="background: var(--gold);"></div>
+  <div class="seg" style="background: var(--teal);"></div>
+  <div class="seg" style="background: var(--teal);"></div>
+  <div class="seg" style="background: var(--coral);"></div>
+  <div class="seg" style="background: #4a90d9;"></div>
+  <div class="seg" style="background: rgba(255,255,255,0.4);"></div>
+</div>
+
+<!-- Section 1 -->
+<div class="section theme-gold">
+  <div class="section-header">
+    <div class="number">1</div>
+    <h2>Who You Are</h2>
+    <div class="time">~20 sec</div>
+  </div>
+  <div class="script-card">
+    <p>Hi, I'm Bingjun Li. I'm a second-year graduate student in the M.S.Ed. program in Student Affairs, and I work as a Graduate Assistant in the <span class="highlight">School of Nursing and Health Studies</span> under Dr. Clifford, the Acting Dean.</p>
+  </div>
+</div>
+
+<!-- Section 2 -->
+<div class="section theme-teal">
+  <div class="section-header">
+    <div class="number">2</div>
+    <h2>The Hook — What You Built</h2>
+    <div class="time">~30 sec</div>
+  </div>
+  <div class="script-card">
+    <p>My project is about how I designed, launched, and grew the <span class="highlight">SNHS Student Ambassador Program</span> — completely from the ground up. When I started my GA position, there was no program, no curriculum, no events — just a shared vision between me and my mentor. Dr. Clifford had the idea, and together we turned it into a real, functioning leadership development program for 20 to 30 undergraduate students.</p>
+  </div>
+</div>
+
+<!-- Section 3 -->
+<div class="section theme-teal">
+  <div class="section-header">
+    <div class="number">3</div>
+    <h2>What You Did — The Work</h2>
+    <div class="time">~40 sec</div>
+  </div>
+  <div class="script-card">
+    <p>I built everything from scratch — the leadership curriculum, the assessment tools, the event calendar, the outreach materials. We ran two leadership workshops in Fall 2025, plus ice breaker events to build community. The workshops covered <span class="highlight-teal">transformational, democratic, adaptive, and collaborative leadership</span> through case studies, group discussions, and activities like Simon Sinek's "Start With Why."</p>
+    <p>What made it interesting is the intersection — I'm an education student designing programming for healthcare students. That unique crossover shaped everything about the program.</p>
+  </div>
+</div>
+
+<!-- Section 4 -->
+<div class="section theme-coral">
+  <div class="section-header">
+    <div class="number">4</div>
+    <h2>The Growth — What Changed</h2>
+    <div class="time">~30 sec</div>
+  </div>
+  <div class="script-card">
+    <p>Honestly, the biggest growth wasn't just the program — it was <span class="highlight">me</span>. After the first workshop, I realized I was doing too much lecturing and not enough listening. So I redesigned the second workshop to be discussion-driven, added a post-survey for real-time feedback, and co-facilitated with Dr. Clifford. That shift — from content delivery to genuine facilitation — changed everything.</p>
+  </div>
+</div>
+
+<!-- Section 5 -->
+<div class="section theme-blue">
+  <div class="section-header">
+    <div class="number">5</div>
+    <h2>Why It Matters — The Takeaway</h2>
+    <div class="time">~30 sec</div>
+  </div>
+  <div class="script-card">
+    <p>I think the most important lesson is that the best way to learn leadership is to actually <span class="highlight">build something that matters</span>. This wasn't a classroom exercise — it was real students, real logistics, real challenges. And through it, I learned that great programs start with relationships, that iteration beats perfection, and that leadership is learned by doing.</p>
+  </div>
+</div>
+
+<!-- Section 6 -->
+<div class="section theme-white">
+  <div class="section-header">
+    <div class="number">6</div>
+    <h2>Close</h2>
+    <div class="time">~10 sec</div>
+  </div>
+  <div class="script-card">
+    <p>I'm really excited to share this story at Scholarship Week. Thank you for considering my application.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Recording Tips -->
+<h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 4px;">Recording <span style="color: var(--gold);">Tips</span></h2>
+<p style="font-size: 0.9rem; color: var(--dim); margin-bottom: 16px;">Keep it simple — one take is fine.</p>
+
+<div class="tips-grid">
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <h4>Lighting</h4>
+    <p>Face a window. Natural light on your face, not behind you. Quiet room, plain or campus background.</p>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">📱</div>
+    <h4>Framing</h4>
+    <p>Head and shoulders, centered. Phone on a tripod or propped up at eye level. Landscape orientation.</p>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">⏱</div>
+    <h4>Length</h4>
+    <p>Aim for 2:00–2:30. That's the sweet spot. Don't stress about hitting exactly 3:00.</p>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">🎯</div>
+    <h4>Delivery</h4>
+    <p>Don't read from a script on camera. Sticky note with bullet points near the camera lens is fine.</p>
+  </div>
+</div>
+
+<!-- Bullet points reference -->
+<div class="bullet-card">
+  <h3>Key Bullet Points (stick near camera)</h3>
+  <ol>
+    <li>I'm Bingjun Li, M.S.Ed. GA in SNHS under Dr. Clifford</li>
+    <li>Built the Student Ambassador Program from scratch</li>
+    <li>Curriculum, workshops, events, assessments — all designed by me</li>
+    <li>Education &times; healthcare = unique intersection</li>
+    <li>Biggest growth: from lecturing &rarr; listening &rarr; facilitating</li>
+    <li>Lesson: leadership is learned by doing</li>
+  </ol>
+</div>
+
+</body>
+</html>
