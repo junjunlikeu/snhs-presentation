@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building Leaders from the Ground Up — Bingjun Li</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0a1628;
+    --blue: #1e3a5f;
+    --teal: #2a9d8f;
+    --gold: #e9c46a;
+    --coral: #e76f51;
+    --white: #f8f9fa;
+    --light: #e8ecf1;
+    --gradient-1: linear-gradient(135deg, #0a1628 0%, #1e3a5f 50%, #2a9d8f 100%);
+    --gradient-2: linear-gradient(135deg, #1e3a5f 0%, #2a9d8f 100%);
+    --gradient-accent: linear-gradient(135deg, #e9c46a 0%, #e76f51 100%);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 60px;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+
+  /* ===== SLIDE BACKGROUNDS ===== */
+  .bg-gradient { background: var(--gradient-1); }
+  .bg-dark { background: var(--navy); }
+  .bg-blue { background: var(--blue); }
+  .bg-teal-dark { background: linear-gradient(135deg, #0a1628 0%, #1a4a42 100%); }
+  .bg-warm { background: linear-gradient(135deg, #1e3a5f 0%, #4a2c2a 100%); }
+  .bg-final { background: linear-gradient(135deg, #0a1628 0%, #2a9d8f 50%, #e9c46a 100%); }
+
+  /* ===== TYPOGRAPHY ===== */
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--gold);
+  }
+
+  p, li {
+    font-size: 1.7rem;
+    line-height: 1.7;
+    font-weight: 400;
+    color: var(--light);
+  }
+
+  .subtitle {
+    font-size: 1.9rem;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .small-text {
+    font-size: 1.7rem;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .highlight { color: var(--gold); }
+  .highlight-teal { color: var(--teal); }
+  .highlight-coral { color: var(--coral); }
+
+  .accent-line {
+    width: 80px;
+    height: 4px;
+    background: var(--gradient-accent);
+    border-radius: 2px;
+    margin: 16px 0 24px 0;
+  }
+
+  /* ===== LAYOUT HELPERS ===== */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+  }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .content-left { text-align: left; }
+  .content-center { text-align: center; }
+
+  .full-width { width: 100%; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover { transform: translateY(-4px); }
+
+  .card-accent {
+    border-top: 3px solid;
+  }
+
+  .card-gold { border-top-color: var(--gold); }
+  .card-teal { border-top-color: var(--teal); }
+  .card-coral { border-top-color: var(--coral); }
+  .card-blue { border-top-color: #4a90d9; }
+
+  /* ===== STAT BOXES ===== */
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.8rem;
+    font-weight: 900;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 1.7rem;
+    color: var(--light);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* ===== QUOTE ===== */
+  .quote-block {
+    border-left: 4px solid var(--gold);
+    padding: 20px 30px;
+    margin: 20px 0;
+    background: rgba(233, 196, 106, 0.08);
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    font-size: 1.9rem;
+    line-height: 1.6;
+    color: var(--white);
+  }
+
+  /* ===== BULLET LIST ===== */
+  ul.styled {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul.styled li {
+    padding: 8px 0 8px 30px;
+    position: relative;
+  }
+
+  ul.styled li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gradient-accent);
+  }
+
+  /* ===== TAG / BADGE ===== */
+  .tag {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin: 4px;
+  }
+
+  .tag-gold { background: rgba(233,196,106,0.2); color: var(--gold); }
+  .tag-teal { background: rgba(42,157,143,0.2); color: var(--teal); }
+  .tag-coral { background: rgba(231,111,81,0.2); color: var(--coral); }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    z-index: 100;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient-accent);
+    transition: width 0.4s ease;
+  }
+
+  /* ===== SLIDE COUNTER ===== */
+  .slide-counter {
+    position: fixed;
+    bottom: 16px;
+    right: 24px;
+    font-size: 1.6rem;
+    color: rgba(255,255,255,0.4);
+    z-index: 100;
+    font-weight: 500;
+  }
+
+  /* ===== NAV HINT ===== */
+  .nav-hint {
+    position: fixed;
+    bottom: 16px;
+    left: 24px;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.25);
+    z-index: 100;
+  }
+
+  /* ===== SVG STYLES ===== */
+  svg text {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .timeline-dot {
+    transition: r 0.3s ease;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide.active .animate-in {
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  .slide.active .delay-1 { animation-delay: 0.15s; opacity: 0; }
+  .slide.active .delay-2 { animation-delay: 0.3s; opacity: 0; }
+  .slide.active .delay-3 { animation-delay: 0.45s; opacity: 0; }
+  .slide.active .delay-4 { animation-delay: 0.6s; opacity: 0; }
+  .slide.active .delay-5 { animation-delay: 0.75s; opacity: 0; }
+
+  /* ===== WORKSHOP IMAGES ===== */
+  .img-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .img-grid img, .ws-img {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .img-grid img:hover, .ws-img:hover {
+    transform: scale(1.03);
+    border-color: var(--gold);
+  }
+
+  .ws-img-sm {
+    width: 100%;
+    max-width: 280px;
+    border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.12);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+    margin-top: 12px;
+  }
+
+  .survey-img {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    background: white;
+  }
+
+  .img-caption {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ===== SLIDE 1: TITLE ANIMATIONS ===== */
+  .title-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  /* Floating gradient orbs */
+  .bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0;
+  }
+
+  .slide.active .bg-orb-1 {
+    width: 500px; height: 500px;
+    top: -10%; right: -5%;
+    background: radial-gradient(circle, rgba(233,196,106,0.25), transparent);
+    animation: orbFloat 8s ease-in-out infinite, fadeInSlow 2s ease-out 0.2s forwards;
+  }
+
+  .slide.active .bg-orb-2 {
+    width: 400px; height: 400px;
+    bottom: -10%; left: -5%;
+    background: radial-gradient(circle, rgba(42,157,143,0.2), transparent);
+    animation: orbFloat2 10s ease-in-out infinite, fadeInSlow 2s ease-out 0.5s forwards;
+  }
+
+  .slide.active .bg-orb-3 {
+    width: 300px; height: 300px;
+    top: 40%; left: 50%;
+    background: radial-gradient(circle, rgba(231,111,81,0.12), transparent);
+    animation: orbFloat3 7s ease-in-out infinite, fadeInSlow 2s ease-out 0.8s forwards;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(-40px, 30px); }
+    66% { transform: translate(20px, -20px); }
+  }
+  @keyframes orbFloat2 {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(30px, -40px); }
+    66% { transform: translate(-20px, 20px); }
+  }
+  @keyframes orbFloat3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-30px, 20px) scale(1.1); }
+  }
+  @keyframes fadeInSlow {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Animated lines (subtle grid/connection effect) */
+  .bg-line {
+    position: absolute;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .slide.active .bg-line-1 {
+    width: 300px; top: 25%; left: 10%;
+    background: linear-gradient(90deg, transparent, rgba(233,196,106,0.2), transparent);
+    animation: lineSlide 4s ease-in-out infinite, fadeInSlow 1s ease-out 1s forwards;
+  }
+  .slide.active .bg-line-2 {
+    width: 250px; top: 70%; right: 15%;
+    background: linear-gradient(90deg, transparent, rgba(42,157,143,0.2), transparent);
+    animation: lineSlide 5s ease-in-out infinite 1s, fadeInSlow 1s ease-out 1.2s forwards;
+  }
+  .slide.active .bg-line-3 {
+    width: 200px; top: 45%; left: 60%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: lineSlide 6s ease-in-out infinite 0.5s, fadeInSlow 1s ease-out 1.4s forwards;
+  }
+
+  @keyframes lineSlide {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(60px); opacity: 1; }
+  }
+
+  /* Sparkle particles */
+  .spark {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  .slide.active .s1 { top: 15%; left: 20%; background: #e9c46a; animation: sparkle 3s ease-in-out infinite 0.5s; }
+  .slide.active .s2 { top: 25%; right: 25%; background: #2a9d8f; animation: sparkle 4s ease-in-out infinite 1s; }
+  .slide.active .s3 { top: 60%; left: 15%; background: #e76f51; animation: sparkle 3.5s ease-in-out infinite 0.8s; }
+  .slide.active .s4 { top: 75%; right: 20%; background: #e9c46a; animation: sparkle 4.5s ease-in-out infinite 1.5s; }
+  .slide.active .s5 { top: 35%; left: 8%; background: white; animation: sparkle 3s ease-in-out infinite 2s; }
+  .slide.active .s6 { top: 50%; right: 10%; background: #2a9d8f; animation: sparkle 5s ease-in-out infinite 0.3s; }
+  .slide.active .s7 { top: 85%; left: 40%; background: #e9c46a; animation: sparkle 3.5s ease-in-out infinite 1.8s; }
+  .slide.active .s8 { top: 10%; left: 55%; background: white; animation: sparkle 4s ease-in-out infinite 0.7s; }
+
+  @keyframes sparkle {
+    0%   { opacity: 0; transform: scale(0.5) translateY(0); }
+    25%  { opacity: 1; transform: scale(1.5); }
+    50%  { opacity: 0.6; transform: scale(1) translateY(-15px); }
+    75%  { opacity: 0.8; transform: scale(1.2) translateY(-5px); }
+    100% { opacity: 0; transform: scale(0.5) translateY(10px); }
+  }
+
+  /* Title layout: full-screen split */
+  .title-layout {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 60px 80px;
+    gap: 80px;
+  }
+
+  .title-left {
+    flex: 1.3;
+    text-align: left;
+  }
+
+  .title-right {
+    flex: 0.7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  /* Event badge */
+  .title-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    border-radius: 30px;
+    background: rgba(233,196,106,0.12);
+    border: 1px solid rgba(233,196,106,0.3);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    opacity: 0;
+    margin-bottom: 28px;
+  }
+
+  .slide.active .title-badge {
+    animation: slideDown 0.7s ease-out 0.3s forwards;
+  }
+
+  .badge-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: badgeBlink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes badgeBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Title words: staggered dramatic entrance */
+  .title-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 5.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0 0 10px 0;
+  }
+
+  .title-word {
+    display: inline-block;
+    opacity: 0;
+  }
+
+  .slide.active .tw-1 {
+    animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  }
+  .slide.active .tw-2 {
+    color: var(--gold);
+    animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards;
+  }
+  .slide.active .tw-3 {
+    animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.7em;
+  }
+  .slide.active .tw-4 {
+    animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+    color: var(--teal);
+  }
+
+  @keyframes wordReveal {
+    from { opacity: 0; transform: translateY(40px) scale(0.9); filter: blur(8px); }
+    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+
+  /* Accent line: grows from left */
+  .title-line {
+    width: 0;
+    height: 4px;
+    background: var(--gradient-accent);
+    border-radius: 2px;
+    margin: 24px 0 28px 0;
+  }
+  .slide.active .title-line {
+    animation: lineGrow 0.6s ease-out 1.4s forwards;
+  }
+
+  @keyframes lineGrow {
+    from { width: 0; }
+    to { width: 140px; }
+  }
+
+  /* Topic description */
+  .title-topic {
+    font-size: 1.6rem;
+    color: var(--light);
+    line-height: 1.6;
+    opacity: 0;
+  }
+  .slide.active .title-topic {
+    animation: fadeInUp 0.7s ease-out 1.7s forwards;
+  }
+
+  /* Glowing highlight for the program name */
+  .title-highlight {
+    color: var(--gold);
+    font-weight: 700;
+    position: relative;
+    display: inline;
+  }
+
+  .slide.active .title-highlight {
+    animation: glowPulse 2.5s ease-in-out 2.5s infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { text-shadow: 0 0 10px rgba(233,196,106,0.3); }
+    50% { text-shadow: 0 0 30px rgba(233,196,106,0.6), 0 0 60px rgba(233,196,106,0.2); }
+  }
+
+  /* Right side: presenter card */
+  .title-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 40px 36px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    width: 320px;
+    opacity: 0;
+  }
+
+  .slide.active .title-card {
+    animation: cardReveal 0.8s ease-out 1.8s forwards;
+  }
+
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .title-card-label {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .title-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+  }
+
+  .title-card-degree {
+    font-size: 1.2rem;
+    color: var(--gold);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .title-card-divider {
+    width: 60px;
+    height: 2px;
+    background: var(--gradient-accent);
+    margin: 18px auto;
+    border-radius: 1px;
+  }
+
+  .title-card-role {
+    font-size: 1.4rem;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .title-card-mentor {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+  }
+
+  .title-card-mentor strong {
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* School badge at bottom right */
+  .title-school {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    padding: 20px 28px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .slide.active .title-school {
+    animation: fadeInUp 0.6s ease-out 2.3s forwards;
+  }
+
+  .title-logo {
+    height: 120px;
+    width: auto;
+    opacity: 0.85;
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,0.3));
+  }
+
+  /* ===== SLIDE 3: COLLISION ANIMATION ===== */
+  .collision-container {
+    position: relative;
+    width: 800px;
+    height: 520px;
+  }
+
+  /* Orbs */
+  .orb {
+    position: absolute;
+    top: 50%;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .orb-edu {
+    left: 0;
+    background: radial-gradient(circle at 40% 40%, rgba(233,196,106,0.35), rgba(231,111,81,0.15));
+    border: 2px solid rgba(233,196,106,0.6);
+    box-shadow: 0 0 40px rgba(233,196,106,0.2), inset 0 0 30px rgba(233,196,106,0.1);
+    animation: floatOrb 2.5s ease-in-out infinite, pulseGlow-gold 2s ease-in-out infinite;
+  }
+
+  .orb-health {
+    right: 0;
+    background: radial-gradient(circle at 60% 40%, rgba(42,157,143,0.35), rgba(30,58,95,0.15));
+    border: 2px solid rgba(42,157,143,0.6);
+    box-shadow: 0 0 40px rgba(42,157,143,0.2), inset 0 0 30px rgba(42,157,143,0.1);
+    animation: floatOrb 2.5s ease-in-out infinite 0.6s, pulseGlow-teal 2s ease-in-out infinite;
+  }
+
+  .orb-icon {
+    font-size: 3.5rem;
+    margin-bottom: 4px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  }
+
+  .orb-label {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  .orb-edu .orb-label { color: #e9c46a; }
+  .orb-health .orb-label { color: #2a9d8f; }
+
+  .orb-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4px;
+    gap: 1px;
+  }
+
+  .orb-details span {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.55);
+    font-weight: 500;
+  }
+
+  /* Merge zone center */
+  .merge-zone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 260px;
+    height: 260px;
+    z-index: 3;
+  }
+
+  .merge-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+    border: 2px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    animation: corePulse 2s ease-in-out infinite;
+  }
+
+  .merge-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.3;
+    color: white;
+    text-shadow: 0 0 20px rgba(233,196,106,0.4);
+  }
+
+  .merge-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid;
+    transform: translate(-50%, -50%);
+  }
+
+  .ring-1 {
+    width: 180px;
+    height: 180px;
+    border-color: rgba(233,196,106,0.25);
+    animation: ringExpand 2s ease-out infinite;
+  }
+
+  .ring-2 {
+    width: 180px;
+    height: 180px;
+    border-color: rgba(42,157,143,0.25);
+    animation: ringExpand 2s ease-out infinite 0.7s;
+  }
+
+  .ring-3 {
+    width: 180px;
+    height: 180px;
+    border-color: rgba(255,255,255,0.15);
+    animation: ringExpand 2s ease-out infinite 1.4s;
+  }
+
+  /* Connection beams */
+  .beam {
+    position: absolute;
+    top: 50%;
+    height: 3px;
+    width: 120px;
+    transform: translateY(-50%);
+    border-radius: 2px;
+    z-index: 1;
+  }
+
+  .beam-left {
+    left: 190px;
+    background: linear-gradient(90deg, rgba(233,196,106,0.6), rgba(255,255,255,0.1));
+    animation: beamPulse 1.4s ease-in-out infinite;
+  }
+
+  .beam-right {
+    right: 190px;
+    background: linear-gradient(270deg, rgba(42,157,143,0.6), rgba(255,255,255,0.1));
+    animation: beamPulse 1.4s ease-in-out infinite 0.4s;
+  }
+
+  /* Floating particles */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1;
+    opacity: 0;
+  }
+
+  .slide.active .particle {
+    animation-play-state: running;
+  }
+
+  .p1 {
+    width: 8px; height: 8px;
+    background: #e9c46a;
+    top: 20%; left: 15%;
+    animation: drift1 3.5s ease-in-out infinite;
+  }
+  .p2 {
+    width: 8px; height: 8px;
+    background: #2a9d8f;
+    top: 70%; right: 10%;
+    animation: drift2 4s ease-in-out infinite 0.3s;
+  }
+  .p3 {
+    width: 12px; height: 12px;
+    background: #e76f51;
+    top: 15%; right: 25%;
+    animation: drift3 3s ease-in-out infinite 0.6s;
+  }
+  .p4 {
+    width: 7px; height: 7px;
+    background: #e9c46a;
+    bottom: 15%; left: 25%;
+    animation: drift1 4.5s ease-in-out infinite 1s;
+  }
+  .p5 {
+    width: 9px; height: 9px;
+    background: #2a9d8f;
+    top: 40%; left: 5%;
+    animation: drift2 3.5s ease-in-out infinite 0.8s;
+  }
+  .p6 {
+    width: 7px; height: 7px;
+    background: white;
+    bottom: 25%; right: 20%;
+    animation: drift3 4s ease-in-out infinite 0.4s;
+  }
+
+  /* Keyframes */
+  @keyframes floatOrb {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(calc(-50% - 10px)) translateX(5px); }
+  }
+
+  @keyframes pulseGlow-gold {
+    0%, 100% { box-shadow: 0 0 40px rgba(233,196,106,0.2), inset 0 0 30px rgba(233,196,106,0.1); }
+    50% { box-shadow: 0 0 60px rgba(233,196,106,0.35), inset 0 0 40px rgba(233,196,106,0.15); }
+  }
+
+  @keyframes pulseGlow-teal {
+    0%, 100% { box-shadow: 0 0 40px rgba(42,157,143,0.2), inset 0 0 30px rgba(42,157,143,0.1); }
+    50% { box-shadow: 0 0 60px rgba(42,157,143,0.35), inset 0 0 40px rgba(42,157,143,0.15); }
+  }
+
+  @keyframes corePulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(233,196,106,0.25), 0 0 60px rgba(42,157,143,0.15);
+      border-color: rgba(255,255,255,0.5);
+    }
+  }
+
+  @keyframes ringExpand {
+    0% {
+      width: 180px; height: 180px;
+      opacity: 0.6;
+    }
+    100% {
+      width: 360px; height: 360px;
+      opacity: 0;
+    }
+  }
+
+  @keyframes beamPulse {
+    0%, 100% { opacity: 0.3; width: 130px; }
+    50% { opacity: 0.8; width: 170px; }
+  }
+
+  @keyframes drift1 {
+    0%   { opacity: 0; transform: translate(0, 0) scale(0.5); }
+    20%  { opacity: 0.8; }
+    50%  { transform: translate(60px, -30px) scale(1); }
+    80%  { opacity: 0.6; }
+    100% { opacity: 0; transform: translate(120px, 10px) scale(0.3); }
+  }
+
+  @keyframes drift2 {
+    0%   { opacity: 0; transform: translate(0, 0) scale(0.5); }
+    20%  { opacity: 0.7; }
+    50%  { transform: translate(-50px, 40px) scale(1.2); }
+    80%  { opacity: 0.5; }
+    100% { opacity: 0; transform: translate(-100px, -20px) scale(0.3); }
+  }
+
+  @keyframes drift3 {
+    0%   { opacity: 0; transform: translate(0, 0) scale(0.8); }
+    25%  { opacity: 0.9; }
+    50%  { transform: translate(-40px, -50px) scale(1); }
+    75%  { opacity: 0.4; }
+    100% { opacity: 0; transform: translate(30px, 60px) scale(0.2); }
+  }
+
+  /* ===== SLIDE 4: ANIMATED PILLARS ===== */
+  .pillars-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .pillar-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 40px;
+    height: 300px;
+    padding: 0 20px;
+  }
+
+  .pillar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 220px;
+    position: relative;
+  }
+
+  .pillar-bar {
+    width: 100%;
+    border-radius: 14px 14px 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Each bar grows taller to show "growing impact" */
+  .bar-gold {
+    height: 0;
+    background: linear-gradient(180deg, rgba(233,196,106,0.5), rgba(233,196,106,0.15));
+    border: 2px solid rgba(233,196,106,0.5);
+    border-bottom: none;
+    box-shadow: 0 0 30px rgba(233,196,106,0.15);
+  }
+  .bar-teal {
+    height: 0;
+    background: linear-gradient(180deg, rgba(42,157,143,0.5), rgba(42,157,143,0.15));
+    border: 2px solid rgba(42,157,143,0.5);
+    border-bottom: none;
+    box-shadow: 0 0 30px rgba(42,157,143,0.15);
+  }
+  .bar-coral {
+    height: 0;
+    background: linear-gradient(180deg, rgba(231,111,81,0.5), rgba(231,111,81,0.15));
+    border: 2px solid rgba(231,111,81,0.5);
+    border-bottom: none;
+    box-shadow: 0 0 30px rgba(231,111,81,0.15);
+  }
+  .bar-blue {
+    height: 0;
+    background: linear-gradient(180deg, rgba(74,144,217,0.5), rgba(74,144,217,0.15));
+    border: 2px solid rgba(74,144,217,0.5);
+    border-bottom: none;
+    box-shadow: 0 0 30px rgba(74,144,217,0.15);
+  }
+
+  /* Animate bars rising when slide is active */
+  .slide.active .bar-gold {
+    animation: riseBar 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s forwards,
+               barGlow-gold 2.5s ease-in-out 1.5s infinite;
+  }
+  .slide.active .bar-teal {
+    animation: riseBar2 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s forwards,
+               barGlow-teal 2.5s ease-in-out 1.7s infinite;
+  }
+  .slide.active .bar-coral {
+    animation: riseBar3 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.9s forwards,
+               barGlow-coral 2.5s ease-in-out 1.9s infinite;
+  }
+  .slide.active .bar-blue {
+    animation: riseBar4 1s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s forwards,
+               barGlow-blue 2.5s ease-in-out 2.1s infinite;
+  }
+
+  @keyframes riseBar  { from { height: 0; } to { height: 100px; } }
+  @keyframes riseBar2 { from { height: 0; } to { height: 150px; } }
+  @keyframes riseBar3 { from { height: 0; } to { height: 200px; } }
+  @keyframes riseBar4 { from { height: 0; } to { height: 260px; } }
+
+  @keyframes barGlow-gold {
+    0%, 100% { box-shadow: 0 0 30px rgba(233,196,106,0.15); }
+    50% { box-shadow: 0 0 50px rgba(233,196,106,0.35), 0 -10px 40px rgba(233,196,106,0.15); }
+  }
+  @keyframes barGlow-teal {
+    0%, 100% { box-shadow: 0 0 30px rgba(42,157,143,0.15); }
+    50% { box-shadow: 0 0 50px rgba(42,157,143,0.35), 0 -10px 40px rgba(42,157,143,0.15); }
+  }
+  @keyframes barGlow-coral {
+    0%, 100% { box-shadow: 0 0 30px rgba(231,111,81,0.15); }
+    50% { box-shadow: 0 0 50px rgba(231,111,81,0.35), 0 -10px 40px rgba(231,111,81,0.15); }
+  }
+  @keyframes barGlow-blue {
+    0%, 100% { box-shadow: 0 0 30px rgba(74,144,217,0.15); }
+    50% { box-shadow: 0 0 50px rgba(74,144,217,0.35), 0 -10px 40px rgba(74,144,217,0.15); }
+  }
+
+  .pillar-icon {
+    font-size: 2.4rem;
+    margin-top: -20px;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+    opacity: 0;
+  }
+
+  .slide.active .pillar-1 .pillar-icon { animation: popIn 0.4s ease-out 1.2s forwards; }
+  .slide.active .pillar-2 .pillar-icon { animation: popIn 0.4s ease-out 1.4s forwards; }
+  .slide.active .pillar-3 .pillar-icon { animation: popIn 0.4s ease-out 1.6s forwards; }
+  .slide.active .pillar-4 .pillar-icon { animation: popIn 0.4s ease-out 1.8s forwards; }
+
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    70% { transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .pillar-label {
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.3;
+    margin-top: 8px;
+  }
+
+  .pillar-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    line-height: 1.3;
+    margin-top: 4px;
+  }
+
+  .pillars-baseline {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(233,196,106,0.4), rgba(42,157,143,0.4), rgba(231,111,81,0.4), rgba(74,144,217,0.4));
+    border-radius: 2px;
+    margin-top: 0;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1200px) {
+    .slide { padding: 40px 50px; }
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2.5rem; }
+    .two-col { gap: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SLIDE 1: TITLE ============ -->
+<div class="slide bg-gradient active" id="slide-1" style="padding: 0;">
+  <!-- Animated background elements -->
+  <div class="title-bg">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-line bg-line-1"></div>
+    <div class="bg-line bg-line-2"></div>
+    <div class="bg-line bg-line-3"></div>
+    <div class="spark s1"></div>
+    <div class="spark s2"></div>
+    <div class="spark s3"></div>
+    <div class="spark s4"></div>
+    <div class="spark s5"></div>
+    <div class="spark s6"></div>
+    <div class="spark s7"></div>
+    <div class="spark s8"></div>
+  </div>
+
+  <!-- Full-screen two-panel layout -->
+  <div class="title-layout">
+    <!-- Left: Main title area -->
+    <div class="title-left">
+      <div class="title-badge">
+        <span class="badge-dot"></span>
+        Monmouth Scholarship Week 2026
+      </div>
+
+      <h1 class="title-main">
+        <span class="title-word tw-1">Building</span><br>
+        <span class="title-word tw-2">Leaders</span><br>
+        <span class="title-word tw-3">from the</span>
+        <span class="title-word tw-4">Ground Up</span>
+      </h1>
+
+      <div class="title-line"></div>
+
+      <p class="title-topic">
+        How a Graduate Assistant Designed, Launched,<br>and Grew the
+        <span class="title-highlight">SNHS Student<br>Ambassador Program</span>
+      </p>
+    </div>
+
+    <!-- Right: Author & context -->
+    <div class="title-right">
+      <div class="title-card">
+        <div class="title-card-label">Presented by</div>
+        <div class="title-card-name">Bingjun Li</div>
+        <div class="title-card-degree">M.S.Ed.</div>
+        <div class="title-card-divider"></div>
+        <div class="title-card-role">Graduate Assistant</div>
+        <div class="title-card-mentor">Under the mentorship of<br><strong>Dr. Shannon N. Clifford</strong><br>Acting Dean, SNHS</div>
+      </div>
+
+      <div class="title-school">
+        <img src="MarjUnterbergNursHealthStud_Logo_Vert_White.png" alt="Marjorie K. Unterberg School of Nursing and Health Studies" class="title-logo">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 2: THE HOOK ============ -->
+<div class="slide bg-dark" id="slide-2">
+  <div class="two-col full-width" style="align-items: center; gap: 60px;">
+    <div style="flex: 1; padding-left: 40px;">
+      <h2 class="animate-in" style="font-size: 2.5rem; color: rgba(255,255,255,0.5); text-align: left;">What if someone handed you</h2>
+      <h1 class="animate-in delay-1" style="font-size: 3.8rem; margin: 20px 0; text-align: left;">
+        a <span class="highlight">blank canvas</span>,<br>a budget, and said:
+      </h1>
+      <div class="quote-block animate-in delay-2" style="text-align: left;">
+        "Build a leadership program for 20-30 students.<br>
+        Design everything. Make it work."
+      </div>
+      <p class="animate-in delay-3" style="margin-top: 30px; font-size: 1.6rem; text-align: left;">
+        That's exactly what happened to me.
+      </p>
+    </div>
+    <div class="animate-in delay-2" style="flex: 1; display: flex; justify-content: center; padding-right: 40px;">
+      <img src="slide-images/s2-hook.png" alt="Blank canvas concept" style="max-height: 75vh; width: auto; max-width: 100%; border-radius: 16px; box-shadow: 0 8px 40px rgba(233,196,106,0.3);">
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 3: WHO AM I ============ -->
+<div class="slide bg-blue" id="slide-3">
+  <div class="two-col full-width">
+    <div class="content-left">
+      <p class="subtitle animate-in">Who Am I</p>
+      <h2 class="animate-in delay-1">From Classroom<br>to <span class="highlight">Program Builder</span></h2>
+      <div class="accent-line animate-in delay-2"></div>
+      <ul class="styled animate-in delay-3">
+        <li><strong>Bingjun Li</strong> &mdash; M.S.Ed. Graduate Assistant</li>
+        <li>Assigned to SNHS under <strong>Dr. Shannon Clifford</strong></li>
+        <li>Tasked with building the <strong>Student Ambassador Program</strong> from concept to reality</li>
+        <li>Education background meeting healthcare leadership &mdash; a unique intersection</li>
+      </ul>
+    </div>
+    <div class="content-center animate-in delay-4" style="position: relative;">
+      <!-- Animated intersection visual -->
+      <div class="collision-container">
+        <!-- Orbiting particles -->
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+        <div class="particle p6"></div>
+
+        <!-- Education orb (left) -->
+        <div class="orb orb-edu">
+          <div class="orb-icon">&#x1F393;</div>
+          <div class="orb-label">Education</div>
+          <div class="orb-details">
+            <span>Curriculum</span>
+            <span>Pedagogy</span>
+            <span>Assessment</span>
+          </div>
+        </div>
+
+        <!-- Healthcare orb (right) -->
+        <div class="orb orb-health">
+          <div class="orb-icon">&#x1FA7A;</div>
+          <div class="orb-label">Healthcare</div>
+          <div class="orb-details">
+            <span>Leadership</span>
+            <span>Clinical</span>
+            <span>Community</span>
+          </div>
+        </div>
+
+        <!-- Center merge zone -->
+        <div class="merge-zone">
+          <div class="merge-ring ring-1"></div>
+          <div class="merge-ring ring-2"></div>
+          <div class="merge-ring ring-3"></div>
+          <div class="merge-core">
+            <div class="merge-text">Student<br>Ambassador<br>Program</div>
+          </div>
+        </div>
+
+        <!-- Connection beams -->
+        <div class="beam beam-left"></div>
+        <div class="beam beam-right"></div>
+      </div>
+      <p style="font-size: 1.2rem; color: rgba(255,255,255,0.45); margin-top: 12px; font-style: italic; text-align: center;">Where education meets healthcare leadership</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 4: THE MISSION ============ -->
+<div class="slide bg-teal-dark" id="slide-4">
+  <div class="full-width">
+    <div class="content-left" style="margin-bottom: 28px;">
+      <p class="subtitle animate-in">The Mission</p>
+      <h2 class="animate-in delay-1">What Is the Student Ambassador Program?</h2>
+      <div class="accent-line animate-in delay-2"></div>
+      <p class="animate-in delay-2" style="font-size: 1.6rem; line-height: 1.7; max-width: 1100px;">
+        A <strong class="highlight">one-year leadership development program</strong> for 20-30 SNHS undergraduate students
+        who represent the school, lead health promotion initiatives, and grow as future healthcare leaders.
+      </p>
+      <div class="animate-in delay-3" style="margin-top: 20px;">
+        <span class="tag tag-gold">Transformational</span>
+        <span class="tag tag-teal">Democratic</span>
+        <span class="tag tag-coral">Adaptive</span>
+        <span class="tag tag-gold">Collaborative</span>
+      </div>
+    </div>
+
+    <!-- Animated Four Pillars -->
+    <div class="pillars-container animate-in delay-4">
+      <div class="pillar-wrapper">
+        <div class="pillar pillar-1">
+          <div class="pillar-bar bar-gold"></div>
+          <div class="pillar-icon">&#x1F3AF;</div>
+          <div class="pillar-label" style="color: #e9c46a;">Leadership<br>Training</div>
+          <div class="pillar-sub">Workshops, styles,<br>case studies</div>
+        </div>
+        <div class="pillar pillar-2">
+          <div class="pillar-bar bar-teal"></div>
+          <div class="pillar-icon">&#x1F91D;</div>
+          <div class="pillar-label" style="color: #2a9d8f;">Community<br>Outreach</div>
+          <div class="pillar-sub">Healthy Futures,<br>local schools</div>
+        </div>
+        <div class="pillar pillar-3">
+          <div class="pillar-bar bar-coral"></div>
+          <div class="pillar-icon">&#x1F4C8;</div>
+          <div class="pillar-label" style="color: #e76f51;">Professional<br>Development</div>
+          <div class="pillar-sub">Public speaking,<br>mentorship</div>
+        </div>
+        <div class="pillar pillar-4">
+          <div class="pillar-bar bar-blue"></div>
+          <div class="pillar-icon">&#x1FA7A;</div>
+          <div class="pillar-label" style="color: #4a90d9;">Health Career<br>Exposure</div>
+          <div class="pillar-sub">Simulations,<br>field trips</div>
+        </div>
+      </div>
+      <div class="pillars-baseline"></div>
+      <p style="font-size: 1.3rem; color: rgba(255,255,255,0.35); text-align: center; margin-top: 10px; font-style: italic;">Growing impact over time &rarr;</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 5: WHAT I BUILT ============ -->
+<div class="slide bg-dark" id="slide-5">
+  <div class="full-width">
+    <div class="content-center" style="margin-bottom: 30px;">
+      <p class="subtitle animate-in">What I Built</p>
+      <h2 class="animate-in delay-1">Designing <span class="highlight">Everything</span> from Scratch</h2>
+    </div>
+    <div class="four-col">
+      <div class="card card-accent card-gold animate-in delay-2" style="padding: 0; overflow: hidden;">
+        <img src="slide-images/s5-curriculum.png" alt="Leadership Curriculum" style="width: 100%; border-radius: 14px 14px 0 0; display: block;">
+        <div style="padding: 20px 24px;">
+          <h3 style="font-size: 1.6rem;">Leadership Curriculum</h3>
+          <p style="font-size: 1.2rem;">Transformational, democratic, adaptive & collaborative leadership workshops with case studies</p>
+        </div>
+      </div>
+      <div class="card card-accent card-teal animate-in delay-3" style="padding: 0; overflow: hidden;">
+        <img src="slide-images/s5-assessment.png" alt="Assessment Tools" style="width: 100%; border-radius: 14px 14px 0 0; display: block;">
+        <div style="padding: 20px 24px;">
+          <h3 style="font-size: 1.6rem; color: var(--teal);">Assessment Tools</h3>
+          <p style="font-size: 1.2rem;">Leadership questionnaire & activity interest survey to measure growth and guide programming</p>
+        </div>
+      </div>
+      <div class="card card-accent card-coral animate-in delay-4" style="padding: 0; overflow: hidden;">
+        <img src="slide-images/s5-events.png" alt="Events & Workshops" style="width: 100%; border-radius: 14px 14px 0 0; display: block;">
+        <div style="padding: 20px 24px;">
+          <h3 style="font-size: 1.6rem; color: var(--coral);">Events & Workshops</h3>
+          <p style="font-size: 1.2rem;">2 leadership workshops, 2 ice breaker events, plus full Spring 2026 programming calendar</p>
+        </div>
+      </div>
+      <div class="card card-accent card-blue animate-in delay-5" style="padding: 0; overflow: hidden;">
+        <img src="slide-images/s5-outreach.png" alt="Outreach Materials" style="width: 100%; border-radius: 14px 14px 0 0; display: block;">
+        <div style="padding: 20px 24px;">
+          <h3 style="font-size: 1.6rem; color: #4a90d9;">Outreach Materials</h3>
+          <p style="font-size: 1.2rem;">Healthy Futures flyer, program poster, promotional materials for recruitment & community partners</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 6: TIMELINE ============ -->
+<div class="slide bg-blue" id="slide-6">
+  <style>
+    /* Timeline animations */
+    @keyframes tl-line-grow {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes tl-node-pop {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes tl-card-rise {
+      0% { transform: translateY(40px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes tl-dot-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--dot-color); }
+      50% { box-shadow: 0 0 0 10px transparent; }
+    }
+    @keyframes tl-img-reveal {
+      0% { clip-path: circle(0% at 50% 50%); opacity: 0; }
+      100% { clip-path: circle(50% at 50% 50%); opacity: 1; }
+    }
+
+    .tl-container {
+      position: relative;
+      width: 96%;
+      max-width: 1500px;
+      margin: 0 auto;
+      padding-top: 10px;
+    }
+    .tl-track {
+      position: relative;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      margin: 0 40px;
+    }
+    .tl-track-fill {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #e9c46a, #2a9d8f, #e76f51, #4a90d9, #ffffff);
+      animation: tl-line-grow 2.5s ease-out forwards;
+      animation-delay: 0.5s;
+      width: 0;
+    }
+    .tl-nodes {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 0 20px;
+      top: -5px;
+    }
+    .tl-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 18%;
+      opacity: 0;
+      animation: tl-node-pop 0.6s ease-out forwards;
+    }
+    .tl-node:nth-child(1) { animation-delay: 1.0s; --dot-color: rgba(233,196,106,0.5); }
+    .tl-node:nth-child(2) { animation-delay: 1.8s; --dot-color: rgba(42,157,143,0.5); }
+    .tl-node:nth-child(3) { animation-delay: 2.6s; --dot-color: rgba(231,111,81,0.5); }
+    .tl-node:nth-child(4) { animation-delay: 3.4s; --dot-color: rgba(74,144,217,0.5); }
+    .tl-node:nth-child(5) { animation-delay: 4.2s; --dot-color: rgba(255,255,255,0.5); }
+
+    .tl-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: tl-dot-pulse 2s ease-in-out infinite;
+      animation-delay: inherit;
+    }
+    .tl-card {
+      margin-top: 16px;
+      text-align: center;
+      opacity: 0;
+      animation: tl-card-rise 0.7s ease-out forwards;
+    }
+    .tl-node:nth-child(1) .tl-card { animation-delay: 1.2s; }
+    .tl-node:nth-child(2) .tl-card { animation-delay: 2.0s; }
+    .tl-node:nth-child(3) .tl-card { animation-delay: 2.8s; }
+    .tl-node:nth-child(4) .tl-card { animation-delay: 3.6s; }
+    .tl-node:nth-child(5) .tl-card { animation-delay: 4.4s; }
+
+    .tl-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 16px;
+      object-fit: cover;
+      margin-bottom: 12px;
+      opacity: 0;
+      animation: tl-img-reveal 0.8s ease-out forwards;
+    }
+    .tl-node:nth-child(1) .tl-img { animation-delay: 1.3s; border: 3px solid rgba(233,196,106,0.4); }
+    .tl-node:nth-child(2) .tl-img { animation-delay: 2.1s; border: 3px solid rgba(42,157,143,0.4); }
+    .tl-node:nth-child(3) .tl-img { animation-delay: 2.9s; border: 3px solid rgba(231,111,81,0.4); }
+    .tl-node:nth-child(4) .tl-img { animation-delay: 3.7s; border: 3px solid rgba(74,144,217,0.4); }
+    .tl-node:nth-child(5) .tl-img { animation-delay: 4.5s; border: 3px solid rgba(255,255,255,0.3); }
+
+    .tl-phase {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .tl-date {
+      font-size: 1.3rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 8px;
+    }
+    .tl-detail {
+      font-size: 1.4rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+  </style>
+
+  <div class="full-width">
+    <div class="content-center" style="margin-bottom: 20px;">
+      <p class="subtitle animate-in">The Journey</p>
+      <h2 class="animate-in delay-1">Program <span class="highlight">Timeline</span></h2>
+    </div>
+
+    <div class="tl-container">
+      <!-- Animated track line -->
+      <div class="tl-track">
+        <div class="tl-track-fill"></div>
+      </div>
+
+      <!-- Timeline nodes -->
+      <div class="tl-nodes">
+        <!-- Phase 1: Foundation -->
+        <div class="tl-node">
+          <div class="tl-dot" style="background: #e9c46a;"></div>
+          <div class="tl-card">
+            <img src="slide-images/s6-foundation.png" alt="Foundation" class="tl-img">
+            <div class="tl-phase" style="color: #e9c46a;">Foundation</div>
+            <div class="tl-date">Fall 2025</div>
+            <div class="tl-detail">Grant Secured<br>Program Design<br>Recruitment</div>
+          </div>
+        </div>
+
+        <!-- Phase 2: Launch -->
+        <div class="tl-node">
+          <div class="tl-dot" style="background: #2a9d8f;"></div>
+          <div class="tl-card">
+            <img src="slide-images/s6-launch.png" alt="Launch" class="tl-img">
+            <div class="tl-phase" style="color: #2a9d8f;">Launch</div>
+            <div class="tl-date">Nov 2025</div>
+            <div class="tl-detail">Ice Breaker Events<br>Team Building<br>20-30 Ambassadors</div>
+          </div>
+        </div>
+
+        <!-- Phase 3: Workshops -->
+        <div class="tl-node">
+          <div class="tl-dot" style="background: #e76f51;"></div>
+          <div class="tl-card">
+            <img src="slide-images/s6-workshops.png" alt="Workshops" class="tl-img">
+            <div class="tl-phase" style="color: #e76f51;">Workshops</div>
+            <div class="tl-date">Nov-Dec 2025</div>
+            <div class="tl-detail">Leadership Training<br>Transformational<br>Leadership Focus</div>
+          </div>
+        </div>
+
+        <!-- Phase 4: Growth -->
+        <div class="tl-node">
+          <div class="tl-dot" style="background: #4a90d9;"></div>
+          <div class="tl-card">
+            <img src="slide-images/s6-growth.png" alt="Growth" class="tl-img">
+            <div class="tl-phase" style="color: #4a90d9;">Growth</div>
+            <div class="tl-date">Spring 2026</div>
+            <div class="tl-detail">Simulation Field Trip<br>Mentorship Training<br>Interest Surveys</div>
+          </div>
+        </div>
+
+        <!-- Phase 5: Future -->
+        <div class="tl-node">
+          <div class="tl-dot" style="background: #ffffff;"></div>
+          <div class="tl-card">
+            <img src="slide-images/s6-future.png" alt="Future" class="tl-img">
+            <div class="tl-phase" style="color: #ffffff;">Future</div>
+            <div class="tl-date">2026+</div>
+            <div class="tl-detail">Community Outreach<br>Leaders Symposium<br>Healthy Futures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 7: WORKSHOP 1 — DEEP DIVE ============ -->
+<div class="slide bg-dark" id="slide-7">
+  <style>
+    /* Workshop image animations */
+    @keyframes ws-float {
+      0%, 100% { transform: translateY(0) rotate(var(--ws-rot, 0deg)); }
+      50% { transform: translateY(-8px) rotate(var(--ws-rot, 0deg)); }
+    }
+    @keyframes ws-shake {
+      0%, 100% { transform: rotate(var(--ws-rot, 0deg)); }
+      15% { transform: rotate(calc(var(--ws-rot, 0deg) + 3deg)); }
+      30% { transform: rotate(calc(var(--ws-rot, 0deg) - 3deg)); }
+      45% { transform: rotate(calc(var(--ws-rot, 0deg) + 2deg)); }
+      60% { transform: rotate(calc(var(--ws-rot, 0deg) - 1deg)); }
+      75% { transform: rotate(var(--ws-rot, 0deg)); }
+    }
+    @keyframes ws-card-enter {
+      0% { transform: scale(0.3) rotate(var(--ws-rot, 0deg)); opacity: 0; filter: blur(10px); }
+      70% { transform: scale(1.05) rotate(var(--ws-rot, 0deg)); opacity: 1; filter: blur(0); }
+      100% { transform: scale(1) rotate(var(--ws-rot, 0deg)); opacity: 1; filter: blur(0); }
+    }
+    @keyframes ws-glow-pulse {
+      0%, 100% { box-shadow: 0 8px 30px rgba(233,196,106,0.15); }
+      50% { box-shadow: 0 12px 50px rgba(233,196,106,0.35); }
+    }
+
+    .ws-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 820px;
+      perspective: 800px;
+    }
+    .ws-photo {
+      border-radius: 14px;
+      border: 3px solid rgba(255,255,255,0.15);
+      overflow: hidden;
+      opacity: 0;
+      animation: ws-card-enter 0.8s ease-out forwards;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .ws-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(233,196,106,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .ws-photo:nth-child(1) {
+      --ws-rot: -2deg;
+      animation-delay: 0.6s;
+      animation: ws-card-enter 0.8s ease-out 0.6s forwards, ws-float 4s ease-in-out 1.4s infinite;
+    }
+    .ws-photo:nth-child(2) {
+      --ws-rot: 1.5deg;
+      animation-delay: 0.9s;
+      animation: ws-card-enter 0.8s ease-out 0.9s forwards, ws-float 4.5s ease-in-out 1.7s infinite;
+    }
+    .ws-photo:nth-child(3) {
+      --ws-rot: 1deg;
+      animation-delay: 1.2s;
+      animation: ws-card-enter 0.8s ease-out 1.2s forwards, ws-float 3.8s ease-in-out 2.0s infinite;
+    }
+    .ws-photo:nth-child(4) {
+      --ws-rot: -1.5deg;
+      animation-delay: 1.5s;
+      animation: ws-card-enter 0.8s ease-out 1.5s forwards, ws-float 4.2s ease-in-out 2.3s infinite;
+    }
+    .ws-photo:hover {
+      transform: scale(1.08) rotate(0deg) !important;
+      border-color: var(--gold);
+      box-shadow: 0 12px 50px rgba(233,196,106,0.4);
+      z-index: 10;
+      animation: ws-shake 0.6s ease-in-out !important;
+    }
+    .ws-photo img {
+      width: 100%;
+      display: block;
+    }
+  </style>
+
+  <div class="two-col full-width" style="align-items: center;">
+    <div class="content-left" style="flex: 0.8;">
+      <p class="subtitle animate-in">Workshop 1, November 18, 2025</p>
+      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">Transformational<br><span class="highlight">Leadership</span></h2>
+      <div class="accent-line animate-in delay-2"></div>
+      <p class="animate-in delay-3" style="font-size: 1.7rem; line-height: 1.7; max-width: 500px;">
+        My first workshop ever, designed from scratch. The theme: <strong class="highlight">"Start With Why"</strong>, inspired by Simon Sinek. Teaching the <strong>Four I's</strong> of transformational leadership through interactive case studies and group discussion.
+      </p>
+    </div>
+    <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center;">
+      <div class="ws-gallery">
+        <div class="ws-photo"><img src="slide-images/ws1-01.png" alt="Workshop 1 Title"></div>
+        <div class="ws-photo"><img src="slide-images/ws1-03.png" alt="Start With Your Why"></div>
+        <div class="ws-photo"><img src="slide-images/ws1-05.png" alt="Transformational Leadership"></div>
+        <div class="ws-photo"><img src="slide-images/ws1-09.png" alt="Group Activity"></div>
+      </div>
+      <p class="img-caption animate-in delay-5" style="text-align: center; margin-top: 12px;">Actual slides from Workshop 1</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 8: EVOLUTION — WHAT I LEARNED ============ -->
+<div class="slide bg-teal-dark" id="slide-8">
+  <style>
+    @keyframes evo-arrow-grow {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes evo-fade-up {
+      0% { transform: translateY(30px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .evo-track {
+      position: relative;
+      max-width: 1100px;
+      margin: 40px auto 0;
+    }
+    .evo-line {
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #e76f51, #2a9d8f);
+      animation: evo-arrow-grow 1.5s ease-out 1s forwards;
+      width: 0;
+    }
+    .evo-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .evo-insight {
+      opacity: 0;
+      animation: evo-fade-up 0.6s ease-out forwards;
+    }
+  </style>
+
+  <div class="full-width">
+    <div class="content-center" style="margin-bottom: 20px;">
+      <p class="subtitle animate-in">My Growth as a Facilitator</p>
+      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">What I <span class="highlight">Learned</span> &amp; Changed</h2>
+    </div>
+
+    <div class="two-col animate-in delay-2" style="gap: 50px; align-items: start; max-width: 1200px; margin: 0 auto;">
+      <!-- What I noticed -->
+      <div>
+        <h3 style="font-size: 1.8rem; color: #e76f51; margin-bottom: 20px;">After Workshop 1, I noticed...</h3>
+        <div class="evo-insight" style="animation-delay: 1.2s; margin-bottom: 18px;">
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="background: rgba(231,111,81,0.2); border-radius: 50%; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">&#x1F4DD;</div>
+            <p style="font-size: 1.6rem; line-height: 1.6;">Too much content delivery, not enough student interaction</p>
+          </div>
+        </div>
+        <div class="evo-insight" style="animation-delay: 1.6s; margin-bottom: 18px;">
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="background: rgba(231,111,81,0.2); border-radius: 50%; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">&#x1F4AC;</div>
+            <p style="font-size: 1.6rem; line-height: 1.6;">Students wanted more discussion and real conversation</p>
+          </div>
+        </div>
+        <div class="evo-insight" style="animation-delay: 2.0s; margin-bottom: 18px;">
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="background: rgba(231,111,81,0.2); border-radius: 50%; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">&#x23F1;</div>
+            <p style="font-size: 1.6rem; line-height: 1.6;">Pacing felt rushed, needed to slow down and listen</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- What I changed -->
+      <div>
+        <h3 style="font-size: 1.8rem; color: #2a9d8f; margin-bottom: 20px;">So for Workshop 2, I...</h3>
+        <div class="evo-insight" style="animation-delay: 1.4s; margin-bottom: 18px;">
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="background: rgba(42,157,143,0.2); border-radius: 50%; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">&#x1F4CA;</div>
+            <p style="font-size: 1.6rem; line-height: 1.6;">Added a <strong>post-survey</strong> to capture feedback in real time</p>
+          </div>
+        </div>
+        <div class="evo-insight" style="animation-delay: 1.8s; margin-bottom: 18px;">
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="background: rgba(42,157,143,0.2); border-radius: 50%; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">&#x1F91D;</div>
+            <p style="font-size: 1.6rem; line-height: 1.6;">Shifted to discussion-driven format, less lecturing, more facilitating</p>
+          </div>
+        </div>
+        <div class="evo-insight" style="animation-delay: 2.2s; margin-bottom: 18px;">
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="background: rgba(42,157,143,0.2); border-radius: 50%; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">&#x1F393;</div>
+            <p style="font-size: 1.6rem; line-height: 1.6;">Co-facilitated with Dr. Clifford, learned from watching her lead</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animated evolution arrow -->
+    <div class="evo-track">
+      <div class="evo-line"></div>
+      <div class="evo-labels">
+        <span style="font-size: 1.2rem; font-weight: 700; color: #e76f51;">Content Heavy</span>
+        <span style="font-size: 1.3rem; color: rgba(255,255,255,0.4); font-style: italic;">Listen first, then redesign</span>
+        <span style="font-size: 1.2rem; font-weight: 700; color: #2a9d8f;">Student Centered</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 9: WORKSHOP 2 — DEEP DIVE ============ -->
+<div class="slide bg-dark" id="slide-9">
+  <div class="two-col full-width" style="align-items: center;">
+    <div class="content-left" style="flex: 0.8;">
+      <p class="subtitle animate-in">Workshop 2, December 2, 2025</p>
+      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">Democratic &amp;<br><span class="highlight">Adaptive Leadership</span></h2>
+      <div class="accent-line animate-in delay-2"></div>
+      <p class="animate-in delay-3" style="font-size: 1.7rem; line-height: 1.7; max-width: 500px;">
+        A redesigned, discussion-driven workshop. Students shared personal leadership experiences, debated democratic vs. adaptive styles, and reflected on how they want to lead in healthcare settings.
+      </p>
+    </div>
+    <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center;">
+      <div class="ws-gallery">
+        <div class="ws-photo"><img src="slide-images/ws2-01.png" alt="Workshop 2 Title"></div>
+        <div class="ws-photo"><img src="slide-images/ws2-03.png" alt="Democratic Leadership"></div>
+        <div class="ws-photo"><img src="slide-images/ws2-06.png" alt="Adaptive Leadership"></div>
+        <div class="ws-photo"><img src="slide-images/ws2-09.png" alt="Group Discussion"></div>
+      </div>
+      <p class="img-caption animate-in delay-5" style="text-align: center; margin-top: 12px;">Actual slides from Workshop 2</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 10: STUDENT FEEDBACK ============ -->
+<div class="slide bg-blue" id="slide-10">
+  <div class="full-width">
+    <div class="content-center" style="margin-bottom: 30px;">
+      <p class="subtitle animate-in">In Their Own Words</p>
+      <h2 class="animate-in delay-1">What the <span class="highlight">Ambassadors</span> Said</h2>
+    </div>
+    <div class="two-col">
+      <div>
+        <!-- Feedback quotes -->
+        <div class="card animate-in delay-2" style="margin-bottom: 16px; border-left: 4px solid var(--gold); background: rgba(233,196,106,0.06);">
+          <p style="font-size: 1.6rem; font-style: italic; color: white; margin-bottom: 8px;">
+            "B did great! It was an effective way of hearing how I could actually be a good leader. Good to see a little bit of Dr. Clifford's personality too."
+          </p>
+          <p style="font-size: 1.6rem; color: var(--gold);">&mdash; Post-workshop survey response</p>
+        </div>
+        <div class="card animate-in delay-3" style="margin-bottom: 16px; border-left: 4px solid var(--teal); background: rgba(42,157,143,0.06);">
+          <p style="font-size: 1.6rem; font-style: italic; color: white; margin-bottom: 8px;">
+            "I really loved this activity that we did with the nursing ambassadors. I can't wait to see what future events has in store for us."
+          </p>
+          <p style="font-size: 1.6rem; color: var(--teal);">&mdash; Post-workshop survey response</p>
+        </div>
+        <div class="card animate-in delay-4" style="border-left: 4px solid var(--coral); background: rgba(231,111,81,0.06);">
+          <p style="font-size: 1.6rem; font-style: italic; color: white; margin-bottom: 8px;">
+            "I would like to get a better communication style when working with a team... gain the confidence in public speaking and talking with families, faculty, potential students."
+          </p>
+          <p style="font-size: 1.6rem; color: var(--coral);">&mdash; What students want from the program</p>
+        </div>
+      </div>
+      <div class="animate-in delay-3" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+        <!-- Actual survey screenshots -->
+        <img src="slide-images/survey-3.png" alt="Activity Interest Survey - Top 3 Activities Bar Chart" class="survey-img">
+        <p class="img-caption">Activity Interest Survey Results (3 responses)</p>
+        <div style="margin-top: 8px; padding: 12px 20px; background: rgba(233,196,106,0.1); border: 1px dashed #e9c46a; border-radius: 10px; text-align: center;">
+          <p style="font-size: 1.6rem; color: #e9c46a; font-weight: 600;">Leadership &amp; Communication: 100% interest</p>
+          <p style="font-size: 1.6rem; color: rgba(255,255,255,0.5); margin-top: 4px;">Students want practical, interactive experiences</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 11: CHALLENGES ============ -->
+<div class="slide bg-warm" id="slide-11">
+  <div class="two-col full-width">
+    <div class="content-left" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <p class="subtitle animate-in">Real Talk</p>
+      <h2 class="animate-in delay-1">The <span class="highlight-coral">Challenges</span><br>Nobody Warns You About</h2>
+      <div class="accent-line animate-in delay-2" style="background: linear-gradient(135deg, #e76f51, #e9c46a);"></div>
+      <img src="slide-images/s11-challenges.png" alt="Challenges illustration" class="animate-in delay-3" style="max-height: 50vh; width: auto; border-radius: 16px; margin-top: 20px; box-shadow: 0 8px 40px rgba(231,111,81,0.3);">
+    </div>
+    <div>
+      <div class="card animate-in delay-2" style="margin-bottom: 16px; border-left: 3px solid #e76f51;">
+        <h3 style="font-size: 1.6rem; color: #e76f51;">Logistics & Coordination</h3>
+        <p style="font-size: 1.6rem;">Scheduling 20-30 busy undergrads, booking rooms, managing budgets, handling permissions &mdash; the invisible work that makes everything else possible.</p>
+      </div>
+      <div class="card animate-in delay-3" style="margin-bottom: 16px; border-left: 3px solid #e9c46a;">
+        <h3 style="font-size: 1.6rem;">Curriculum Design</h3>
+        <p style="font-size: 1.6rem;">How do you teach leadership to nursing and health students in a way that's practical, not theoretical? Finding the right balance was an ongoing experiment.</p>
+      </div>
+      <div class="card animate-in delay-4" style="border-left: 3px solid #2a9d8f;">
+        <h3 style="font-size: 1.6rem; color: #2a9d8f;">Topic Selection & Engagement</h3>
+        <p style="font-size: 1.6rem;">Which leadership styles matter most? How do you keep participation high? Every choice had to be intentional and student-centered.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 12: BREAKTHROUGH MOMENT ============ -->
+<div class="slide bg-dark" id="slide-12">
+  <div class="two-col full-width" style="align-items: center;">
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <p class="subtitle animate-in">The Turning Point</p>
+      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">When It All <span class="highlight">Clicked</span></h2>
+      <div class="accent-line animate-in delay-2" style="margin: 16px auto 20px auto;"></div>
+      <img src="slide-images/s12-breakthrough.png" alt="Breakthrough moment" class="animate-in delay-3" style="max-height: 50vh; width: auto; border-radius: 16px; margin-top: 10px; box-shadow: 0 8px 40px rgba(233,196,106,0.3);">
+    </div>
+    <div>
+      <div class="quote-block animate-in delay-3" style="font-size: 1.6rem; text-align: left;">
+        During our Transformational Leadership workshop, something shifted. Students didn't just listen,
+        they <strong>leaned in</strong>. They started sharing their own experiences, debating leadership styles,
+        giving each other honest feedback. The room came alive.
+      </div>
+      <p class="animate-in delay-4" style="margin-top: 24px; font-size: 1.6rem;">
+        That was the moment I realized: <span class="highlight">the curriculum wasn't just information, it was a catalyst for real conversation.</span>
+      </p>
+      <div class="animate-in delay-5" style="margin-top: 24px; display: flex; gap: 16px; justify-content: center; align-items: center;">
+        <img src="slide-images/ws2-09.png" alt="Transformational Leader Case Study" style="width: 560px; border-radius: 10px; border: 2px solid rgba(233,196,106,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <img src="slide-images/ws2-10.png" alt="When Purpose Meets Reality" style="width: 560px; border-radius: 10px; border: 2px solid rgba(42,157,143,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+      </div>
+      <p class="img-caption animate-in delay-5" style="margin-top: 8px; text-align: center;">Case study slides that sparked real debate</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 13: IMPACT & NUMBERS ============ -->
+<div class="slide bg-teal-dark" id="slide-13">
+  <style>
+    @keyframes stat-slam {
+      0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+      50% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+      70% { transform: scale(0.95) rotate(-1deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes ring-fill {
+      from { stroke-dashoffset: var(--ring-circumference); }
+      to { stroke-dashoffset: var(--ring-target); }
+    }
+    @keyframes stat-glow {
+      0%, 100% { filter: drop-shadow(0 0 8px var(--stat-color)); }
+      50% { filter: drop-shadow(0 0 20px var(--stat-color)); }
+    }
+    @keyframes stat-label-up {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .impact-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      opacity: 0;
+      animation: stat-slam 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    .impact-card:nth-child(1) { animation-delay: 0.6s; --stat-color: rgba(233,196,106,0.6); }
+    .impact-card:nth-child(2) { animation-delay: 1.1s; --stat-color: rgba(42,157,143,0.6); }
+    .impact-card:nth-child(3) { animation-delay: 1.6s; --stat-color: rgba(231,111,81,0.6); }
+    .impact-card:nth-child(4) { animation-delay: 2.1s; --stat-color: rgba(74,144,217,0.6); }
+
+    .ring-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin-bottom: 20px;
+    }
+    .ring-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .ring-bg {
+      fill: none;
+      stroke: rgba(255,255,255,0.08);
+      stroke-width: 8;
+    }
+    .ring-progress {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: var(--ring-circumference);
+      stroke-dashoffset: var(--ring-circumference);
+      animation: ring-fill 1.5s ease-out forwards;
+    }
+    .impact-card:nth-child(1) .ring-progress { stroke: #e9c46a; animation-delay: 0.9s; --ring-circumference: 528; --ring-target: 0; }
+    .impact-card:nth-child(2) .ring-progress { stroke: #2a9d8f; animation-delay: 1.4s; --ring-circumference: 528; --ring-target: 264; }
+    .impact-card:nth-child(3) .ring-progress { stroke: #e76f51; animation-delay: 1.9s; --ring-circumference: 528; --ring-target: 264; }
+    .impact-card:nth-child(4) .ring-progress { stroke: #4a90d9; animation-delay: 2.4s; --ring-circumference: 528; --ring-target: 0; }
+
+    .ring-svg {
+      animation: stat-glow 2.5s ease-in-out infinite;
+      animation-delay: inherit;
+    }
+    .impact-card:nth-child(1) .ring-svg { animation-delay: 2.4s; --stat-color: rgba(233,196,106,0.4); }
+    .impact-card:nth-child(2) .ring-svg { animation-delay: 2.9s; --stat-color: rgba(42,157,143,0.4); }
+    .impact-card:nth-child(3) .ring-svg { animation-delay: 3.4s; --stat-color: rgba(231,111,81,0.4); }
+    .impact-card:nth-child(4) .ring-svg { animation-delay: 3.9s; --stat-color: rgba(74,144,217,0.4); }
+
+    .ring-number {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 900;
+    }
+    .impact-card:nth-child(1) .ring-number { color: #e9c46a; }
+    .impact-card:nth-child(2) .ring-number { color: #2a9d8f; }
+    .impact-card:nth-child(3) .ring-number { color: #e76f51; }
+    .impact-card:nth-child(4) .ring-number { color: #4a90d9; }
+
+    .impact-label {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--light);
+      opacity: 0;
+      animation: stat-label-up 0.5s ease-out forwards;
+    }
+    .impact-card:nth-child(1) .impact-label { animation-delay: 1.0s; }
+    .impact-card:nth-child(2) .impact-label { animation-delay: 1.5s; }
+    .impact-card:nth-child(3) .impact-label { animation-delay: 2.0s; }
+    .impact-card:nth-child(4) .impact-label { animation-delay: 2.5s; }
+  </style>
+
+  <div class="full-width">
+    <div class="content-center" style="margin-bottom: 40px;">
+      <p class="subtitle animate-in">Impact So Far</p>
+      <h2 class="animate-in delay-1">By the <span class="highlight">Numbers</span></h2>
+    </div>
+
+    <div class="impact-grid">
+      <!-- 20 Ambassadors -->
+      <div class="impact-card">
+        <div class="ring-container">
+          <svg class="ring-svg" viewBox="0 0 180 180">
+            <circle class="ring-bg" cx="90" cy="90" r="84"/>
+            <circle class="ring-progress" cx="90" cy="90" r="84"/>
+          </svg>
+          <div class="ring-number" data-target="20" data-delay="900">0</div>
+        </div>
+        <div class="impact-label">Undergraduate<br>Ambassadors</div>
+      </div>
+
+      <!-- 4 Events -->
+      <div class="impact-card">
+        <div class="ring-container">
+          <svg class="ring-svg" viewBox="0 0 180 180">
+            <circle class="ring-bg" cx="90" cy="90" r="84"/>
+            <circle class="ring-progress" cx="90" cy="90" r="84"/>
+          </svg>
+          <div class="ring-number" data-target="4" data-delay="1400">0</div>
+        </div>
+        <div class="impact-label">Events<br>Completed</div>
+      </div>
+
+      <!-- 4 Leadership Styles -->
+      <div class="impact-card">
+        <div class="ring-container">
+          <svg class="ring-svg" viewBox="0 0 180 180">
+            <circle class="ring-bg" cx="90" cy="90" r="84"/>
+            <circle class="ring-progress" cx="90" cy="90" r="84"/>
+          </svg>
+          <div class="ring-number" data-target="4" data-delay="1900">0</div>
+        </div>
+        <div class="impact-label">Leadership Styles<br>Taught</div>
+      </div>
+
+      <!-- $10K Grant -->
+      <div class="impact-card">
+        <div class="ring-container">
+          <svg class="ring-svg" viewBox="0 0 180 180">
+            <circle class="ring-bg" cx="90" cy="90" r="84"/>
+            <circle class="ring-progress" cx="90" cy="90" r="84"/>
+          </svg>
+          <div class="ring-number" data-target="10" data-prefix="$" data-suffix="K" data-delay="2400">$0K</div>
+        </div>
+        <div class="impact-label">Diversity Innovation<br>Grant Secured</div>
+      </div>
+    </div>
+
+    <div class="content-center animate-in delay-5" style="margin-top: 36px;">
+      <p style="font-size: 1.7rem; color: var(--light);">
+        Connected to the <strong class="highlight">Healthy Futures Initiative</strong>, building pathways for underserved communities into health professions
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Count-up animation for slide 13
+    (function() {
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          if (m.target.id === 'slide-13' && m.target.classList.contains('active')) {
+            startCounting();
+          }
+        });
+      });
+      const slide13 = document.getElementById('slide-13');
+      if (slide13) {
+        observer.observe(slide13, { attributes: true, attributeFilter: ['class'] });
+      }
+
+      function startCounting() {
+        document.querySelectorAll('#slide-13 .ring-number').forEach(function(el) {
+          const target = parseInt(el.dataset.target);
+          const delay = parseInt(el.dataset.delay) || 0;
+          const prefix = el.dataset.prefix || '';
+          const suffix = el.dataset.suffix || '';
+          const duration = 1200;
+
+          setTimeout(function() {
+            const start = performance.now();
+            function tick(now) {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              const current = Math.round(eased * target);
+              el.textContent = prefix + current + suffix;
+              if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+          }, delay);
+        });
+      }
+    })();
+  </script>
+</div>
+
+<!-- ============ SLIDE 14: WHAT'S NEXT ============ -->
+<div class="slide bg-blue" id="slide-14">
+  <div class="two-col full-width">
+    <div class="content-left">
+      <p class="subtitle animate-in">Looking Ahead</p>
+      <h2 class="animate-in delay-1">Spring 2026<br>&amp; <span class="highlight">Beyond</span></h2>
+      <div class="accent-line animate-in delay-2"></div>
+      <ul class="styled animate-in delay-3">
+        <li><strong>Simulation Field Trip</strong>, Grunin Center hands-on experience in Nursing, PA, OT, AT, PT</li>
+        <li><strong>Peer Mentorship Training</strong>, Building public speaking &amp; mentorship skills</li>
+        <li><strong>Future Leaders Symposium</strong>, Full day mini-conference with certificates</li>
+        <li><strong>Community Outreach</strong>, Connecting with local schools through Healthy Futures</li>
+      </ul>
+    </div>
+    <div class="animate-in delay-2" style="display: flex; justify-content: center;">
+      <style>
+        @keyframes growth-path-draw {
+          from { stroke-dashoffset: 600; }
+          to { stroke-dashoffset: 0; }
+        }
+        @keyframes growth-dot-pop {
+          0% { r: 0; opacity: 0; }
+          60% { r: 13; opacity: 1; }
+          100% { r: 10; opacity: 1; }
+        }
+        @keyframes growth-label-fade {
+          0% { opacity: 0; transform: translateY(8px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes growth-arrow-pop {
+          0% { opacity: 0; transform: scale(0); }
+          60% { opacity: 1; transform: scale(1.3); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes growth-ring-pulse {
+          0%, 100% { r: 14; opacity: 0.3; }
+          50% { r: 22; opacity: 0; }
+        }
+        #slide-14 .growth-path {
+          stroke-dasharray: 600;
+          stroke-dashoffset: 600;
+        }
+        .slide.active#slide-14 .growth-path {
+          animation: growth-path-draw 2.5s ease-out 0.5s forwards;
+        }
+        .slide.active#slide-14 .g-dot-1 { animation: growth-dot-pop 0.5s ease-out 1.0s forwards; }
+        .slide.active#slide-14 .g-dot-2 { animation: growth-dot-pop 0.5s ease-out 1.5s forwards; }
+        .slide.active#slide-14 .g-dot-3 { animation: growth-dot-pop 0.5s ease-out 2.0s forwards; }
+        .slide.active#slide-14 .g-dot-4 { animation: growth-dot-pop 0.5s ease-out 2.5s forwards; }
+        .slide.active#slide-14 .g-dot-5 { animation: growth-dot-pop 0.5s ease-out 3.0s forwards; }
+        .slide.active#slide-14 .g-ring-1 { animation: growth-ring-pulse 2s ease-in-out 1.5s infinite; }
+        .slide.active#slide-14 .g-ring-2 { animation: growth-ring-pulse 2s ease-in-out 2.0s infinite; }
+        .slide.active#slide-14 .g-ring-3 { animation: growth-ring-pulse 2s ease-in-out 2.5s infinite; }
+        .slide.active#slide-14 .g-ring-4 { animation: growth-ring-pulse 2s ease-in-out 3.0s infinite; }
+        .slide.active#slide-14 .g-ring-5 { animation: growth-ring-pulse 2s ease-in-out 3.5s infinite; }
+        .slide.active#slide-14 .g-label-1 { animation: growth-label-fade 0.4s ease-out 1.2s forwards; }
+        .slide.active#slide-14 .g-label-2 { animation: growth-label-fade 0.4s ease-out 1.7s forwards; }
+        .slide.active#slide-14 .g-label-3 { animation: growth-label-fade 0.4s ease-out 2.2s forwards; }
+        .slide.active#slide-14 .g-label-4 { animation: growth-label-fade 0.4s ease-out 2.7s forwards; }
+        .slide.active#slide-14 .g-label-5 { animation: growth-label-fade 0.4s ease-out 3.2s forwards; }
+        .slide.active#slide-14 .g-arrow { animation: growth-arrow-pop 0.5s ease-out 3.0s forwards; }
+        #slide-14 .g-dot-1, #slide-14 .g-dot-2, #slide-14 .g-dot-3, #slide-14 .g-dot-4, #slide-14 .g-dot-5 { opacity: 0; }
+        #slide-14 .g-ring-1, #slide-14 .g-ring-2, #slide-14 .g-ring-3, #slide-14 .g-ring-4, #slide-14 .g-ring-5 { opacity: 0; }
+        #slide-14 .g-label-1, #slide-14 .g-label-2, #slide-14 .g-label-3, #slide-14 .g-label-4, #slide-14 .g-label-5 { opacity: 0; }
+        #slide-14 .g-arrow { opacity: 0; }
+      </style>
+
+      <!-- SVG: Animated Growth Trajectory -->
+      <svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 650px;">
+        <defs>
+          <linearGradient id="growth-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#1e3a5f"/>
+            <stop offset="50%" style="stop-color:#2a9d8f"/>
+            <stop offset="100%" style="stop-color:#e9c46a"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Animated growth path -->
+        <path class="growth-path" d="M 60 360 Q 110 340, 140 310 Q 170 280, 210 250 Q 250 220, 290 180 Q 330 140, 370 90 Q 390 60, 430 30" fill="none" stroke="url(#growth-grad)" stroke-width="5" stroke-linecap="round"/>
+
+        <!-- Animated arrow head -->
+        <polygon class="g-arrow" points="420,18 445,35 428,40" fill="#e9c46a" transform-origin="432 30"/>
+
+        <!-- Pulsing rings behind dots -->
+        <circle class="g-ring-1" cx="60" cy="360" r="14" fill="none" stroke="#1e3a5f" stroke-width="2"/>
+        <circle class="g-ring-2" cx="140" cy="310" r="14" fill="none" stroke="#1e6a5f" stroke-width="2"/>
+        <circle class="g-ring-3" cx="210" cy="250" r="14" fill="none" stroke="#2a9d8f" stroke-width="2"/>
+        <circle class="g-ring-4" cx="290" cy="180" r="14" fill="none" stroke="#8ab34f" stroke-width="2"/>
+        <circle class="g-ring-5" cx="430" cy="30" r="14" fill="none" stroke="#e9c46a" stroke-width="2"/>
+
+        <!-- Step dots -->
+        <circle class="g-dot-1" cx="60" cy="360" r="0" fill="#1e3a5f" stroke="white" stroke-width="2"/>
+        <circle class="g-dot-2" cx="140" cy="310" r="0" fill="#1e6a5f" stroke="white" stroke-width="2"/>
+        <circle class="g-dot-3" cx="210" cy="250" r="0" fill="#2a9d8f" stroke="white" stroke-width="2"/>
+        <circle class="g-dot-4" cx="290" cy="180" r="0" fill="#8ab34f" stroke="white" stroke-width="2"/>
+        <circle class="g-dot-5" cx="430" cy="30" r="0" fill="#e9c46a" stroke="white" stroke-width="3"/>
+
+        <!-- Labels -->
+        <text class="g-label-1" x="82" y="368" fill="rgba(255,255,255,0.8)" font-size="16" font-weight="500">Program Design</text>
+        <text class="g-label-2" x="162" y="318" fill="rgba(255,255,255,0.8)" font-size="16" font-weight="500">Ice Breakers</text>
+        <text class="g-label-3" x="232" y="258" fill="rgba(255,255,255,0.8)" font-size="16" font-weight="500">Workshops</text>
+        <text class="g-label-4" x="178" y="170" fill="rgba(255,255,255,0.8)" font-size="16" font-weight="500">Field Trips &amp; Surveys</text>
+        <text class="g-label-5" x="280" y="20" fill="#e9c46a" font-size="18" font-weight="700">Symposium &amp; Outreach</text>
+
+        <text x="250" y="410" fill="rgba(255,255,255,0.35)" font-size="15" text-anchor="middle" font-style="italic">Program Growth Trajectory</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 15: LESSONS LEARNED ============ -->
+<div class="slide bg-dark" id="slide-15">
+  <div class="full-width">
+    <div class="content-center" style="margin-bottom: 36px;">
+      <p class="subtitle animate-in">Lessons Learned</p>
+      <h2 class="animate-in delay-1">What Building This Program <span class="highlight">Taught Me</span></h2>
+    </div>
+    <div class="three-col">
+      <div class="card card-accent card-gold animate-in delay-2" style="text-align: center; padding: 36px 24px;">
+        <svg viewBox="0 0 64 64" width="56" height="56" style="margin: 0 auto 16px auto; display: block;">
+          <circle cx="32" cy="24" r="12" fill="none" stroke="#e9c46a" stroke-width="2.5"/>
+          <path d="M14 52 C14 40 50 40 50 52" fill="none" stroke="#e9c46a" stroke-width="2.5"/>
+          <circle cx="48" cy="28" r="8" fill="none" stroke="#e9c46a" stroke-width="1.5" opacity="0.5"/>
+          <circle cx="16" cy="28" r="8" fill="none" stroke="#e9c46a" stroke-width="1.5" opacity="0.5"/>
+        </svg>
+        <h3 style="font-size: 1.6rem;">Start With People</h3>
+        <p style="font-size: 1.6rem;">Great programs aren't built on paper &mdash; they're built on relationships. Listen to your students first, design second.</p>
+      </div>
+      <div class="card card-accent card-teal animate-in delay-3" style="text-align: center; padding: 36px 24px;">
+        <svg viewBox="0 0 64 64" width="56" height="56" style="margin: 0 auto 16px auto; display: block;">
+          <path d="M32 8 L32 56" stroke="#2a9d8f" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20 20 L32 8 L44 20" fill="none" stroke="#2a9d8f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M16 44 L48 44" stroke="#2a9d8f" stroke-width="1.5" opacity="0.4" stroke-dasharray="4 3"/>
+          <path d="M12 36 L52 36" stroke="#2a9d8f" stroke-width="1.5" opacity="0.3" stroke-dasharray="4 3"/>
+        </svg>
+        <h3 style="font-size: 1.6rem;">Iterate, Don't Perfect</h3>
+        <p style="font-size: 1.6rem;">The first workshop wasn't perfect. The second was better. Progress beats perfection every time.</p>
+      </div>
+      <div class="card card-accent card-coral animate-in delay-4" style="text-align: center; padding: 36px 24px;">
+        <svg viewBox="0 0 64 64" width="56" height="56" style="margin: 0 auto 16px auto; display: block;">
+          <rect x="8" y="28" width="14" height="28" rx="3" fill="none" stroke="#e76f51" stroke-width="2" opacity="0.5"/>
+          <rect x="25" y="18" width="14" height="38" rx="3" fill="none" stroke="#e76f51" stroke-width="2" opacity="0.7"/>
+          <rect x="42" y="8" width="14" height="48" rx="3" fill="none" stroke="#e76f51" stroke-width="2.5"/>
+        </svg>
+        <h3 style="font-size: 1.6rem;">Leadership Is Learned By Doing</h3>
+        <p style="font-size: 1.6rem;">I didn't just teach leadership &mdash; I had to practice it. Building this program was my own leadership lab.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 16: THANK YOU ============ -->
+<div class="slide bg-dark" id="slide-16">
+  <style>
+    @keyframes thank-fade-up {
+      0% { transform: translateY(40px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes thank-sparkle {
+      0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1) rotate(180deg); }
+    }
+    @keyframes thank-heart {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    .thank-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      animation: thank-fade-up 0.6s ease-out forwards;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .thank-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--card-accent);
+      box-shadow: 0 8px 30px var(--card-glow);
+    }
+    .thank-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      display: block;
+      animation: thank-heart 2s ease-in-out infinite;
+    }
+    .thank-sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .thank-sparkles span {
+      position: absolute;
+      font-size: 1.4rem;
+      animation: thank-sparkle 3s ease-in-out infinite;
+    }
+  </style>
+
+  <div class="full-width" style="position: relative;">
+    <!-- Floating sparkles -->
+    <div class="thank-sparkles">
+      <span style="top: 8%; left: 5%; animation-delay: 0s;">&#x2728;</span>
+      <span style="top: 15%; right: 8%; animation-delay: 0.5s;">&#x2B50;</span>
+      <span style="top: 70%; left: 10%; animation-delay: 1s;">&#x2728;</span>
+      <span style="top: 60%; right: 5%; animation-delay: 1.5s;">&#x2B50;</span>
+      <span style="top: 35%; left: 3%; animation-delay: 2s;">&#x2728;</span>
+      <span style="top: 80%; right: 12%; animation-delay: 2.5s;">&#x2B50;</span>
+    </div>
+
+    <div class="content-center" style="margin-bottom: 36px;">
+      <p class="subtitle animate-in">Gratitude</p>
+      <h2 class="animate-in delay-1" style="font-size: 3.8rem;">Thank <span class="highlight">You</span></h2>
+    </div>
+
+    <div class="four-col" style="max-width: 1400px; margin: 0 auto;">
+      <div class="thank-card" style="animation-delay: 0.8s; --card-accent: #e9c46a; --card-glow: rgba(233,196,106,0.3);">
+        <span class="thank-icon" style="animation-delay: 0.3s;">&#x1F393;</span>
+        <h3 style="font-size: 1.7rem; color: #e9c46a;">Dr. Shannon Clifford</h3>
+        <p style="font-size: 1.5rem; color: rgba(255,255,255,0.65);">Acting Dean &amp; Mentor<br>For believing in the vision and guiding me every step</p>
+      </div>
+
+      <div class="thank-card" style="animation-delay: 1.2s; --card-accent: #2a9d8f; --card-glow: rgba(42,157,143,0.3);">
+        <span class="thank-icon" style="animation-delay: 0.6s;">&#x1F3EB;</span>
+        <h3 style="font-size: 1.7rem; color: #2a9d8f;">SNHS Faculty &amp; Staff</h3>
+        <p style="font-size: 1.5rem; color: rgba(255,255,255,0.65);">For the resources, support, and trust to build something new</p>
+      </div>
+
+      <div class="thank-card" style="animation-delay: 1.6s; --card-accent: #e76f51; --card-glow: rgba(231,111,81,0.3);">
+        <span class="thank-icon" style="animation-delay: 0.9s;">&#x1F91D;</span>
+        <h3 style="font-size: 1.7rem; color: #e76f51;">20 Student Ambassadors</h3>
+        <p style="font-size: 1.5rem; color: rgba(255,255,255,0.65);">For showing up, leaning in, and making this program come alive</p>
+      </div>
+
+      <div class="thank-card" style="animation-delay: 2.0s; --card-accent: #4a90d9; --card-glow: rgba(74,144,217,0.3);">
+        <span class="thank-icon" style="animation-delay: 1.2s;">&#x1F3C6;</span>
+        <h3 style="font-size: 1.7rem; color: #4a90d9;">Scholarship Week Committee</h3>
+        <p style="font-size: 1.5rem; color: rgba(255,255,255,0.65);">For the opportunity to share this journey with you today</p>
+      </div>
+    </div>
+
+    <div class="content-center" style="margin-top: 36px; opacity: 0; animation: thank-fade-up 0.6s ease-out 2.5s forwards;">
+      <p style="font-size: 1.7rem; color: rgba(255,255,255,0.5); font-style: italic;">
+        None of this would have been possible without each of you
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 17: CLOSING ============ -->
+<div class="slide bg-final" id="slide-17">
+  <div class="content-center" style="max-width: 800px;">
+    <h1 class="animate-in" style="font-size: 3.5rem;">
+      The best way to learn<br>leadership is to <span class="highlight">build something</span><br>that matters.
+    </h1>
+    <div class="accent-line animate-in delay-1" style="margin: 24px auto;"></div>
+    <p class="animate-in delay-2" style="font-size: 1.6rem; color: var(--light); margin-bottom: 30px;">
+      Thank you for your time and support.
+    </p>
+    <div class="animate-in delay-3" style="margin-top: 20px;">
+      <p style="font-size: 1.6rem; font-weight: 600;">Bingjun Li, M.S.Ed.</p>
+      <p class="small-text">Graduate Assistant &middot; SNHS &middot; Monmouth University</p>
+      <p class="small-text">Mentored by Dr. Shannon N. Clifford, Acting Dean</p>
+    </div>
+    <div class="animate-in delay-4" style="margin-top: 36px;">
+      <p class="small-text" style="color: rgba(255,255,255,0.4);">snhsdean@monmouth.edu</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NAVIGATION ===== -->
+<div class="progress-container">
+  <div class="progress-bar" id="progress"></div>
+</div>
+<div class="slide-counter" id="counter">1 / 17</div>
+<div class="nav-hint">Arrow keys or click to navigate</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+
+  function updateSlide(direction) {
+    if (direction === 'next' && current < total - 1) {
+      slides[current].classList.remove('active');
+      slides[current].classList.add('exit');
+      current++;
+      slides[current].classList.remove('exit');
+      slides[current].classList.add('active');
+    } else if (direction === 'prev' && current > 0) {
+      slides[current].classList.remove('active');
+      current--;
+      slides[current].classList.remove('exit');
+      slides[current].classList.add('active');
+    }
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      updateSlide('next');
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      updateSlide('prev');
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.clientX > window.innerWidth / 2) {
+      updateSlide('next');
+    } else {
+      updateSlide('prev');
+    }
+  });
+
+  // Touch support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      updateSlide(diff > 0 ? 'next' : 'prev');
+    }
+  });
+</script>
+</body>
+</html>
