@@ -466,7 +466,7 @@
     width: 100%;
     height: 100%;
     padding: 60px 80px;
-    gap: 80px;
+    gap: 10px;
   }
 
   .title-left {
@@ -475,11 +475,14 @@
   }
 
   .title-right {
-    flex: 0.7;
+    flex: 1;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    gap: 28px;
+    max-width: 680px;
+    margin: 0 auto 0 0;
   }
 
   /* Event badge */
@@ -605,11 +608,16 @@
   .title-card {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 20px;
-    padding: 40px 36px;
+    border-radius: 24px;
+    padding: 48px 44px;
     text-align: center;
     backdrop-filter: blur(12px);
-    width: 320px;
+    flex: 1.4;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     opacity: 0;
   }
 
@@ -623,51 +631,128 @@
   }
 
   .title-card-label {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     color: rgba(255,255,255,0.4);
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     font-weight: 600;
   }
 
   .title-card-name {
     font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-size: 3.2rem;
+    font-weight: 900;
     color: white;
+    white-space: nowrap;
   }
 
   .title-card-degree {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: var(--gold);
     font-weight: 600;
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
   .title-card-divider {
-    width: 60px;
+    width: 80px;
     height: 2px;
     background: var(--gradient-accent);
-    margin: 18px auto;
+    margin: 20px auto;
     border-radius: 1px;
   }
 
   .title-card-role {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: rgba(255,255,255,0.7);
     font-weight: 500;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
   }
 
-  .title-card-mentor {
-    font-size: 1rem;
-    color: rgba(255,255,255,0.45);
-    line-height: 1.5;
+  /* Mentor connection section */
+  .title-card-mentor-section {
+    position: relative;
+    margin-top: 8px;
+    padding-top: 20px;
   }
 
-  .title-card-mentor strong {
-    color: rgba(255,255,255,0.7);
+  .mentor-connection-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    opacity: 0;
+  }
+
+  .slide.active .mentor-connection-line {
+    animation: fadeInUp 0.5s ease-out 2.6s forwards;
+  }
+
+  .mentor-connection-line span {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  .mentor-connection-line::before,
+  .mentor-connection-line::after {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--teal);
+    opacity: 0.5;
+  }
+
+  .mentor-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(233,196,106,0.4), 0 0 60px rgba(233,196,106,0.15);
+    opacity: 0;
+    position: relative;
+    display: inline-block;
+  }
+
+  .slide.active .mentor-name {
+    animation: mentorReveal 0.8s ease-out 2.9s forwards;
+  }
+
+  @keyframes mentorReveal {
+    0% { opacity: 0; transform: scale(0.9); }
+    60% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 40px rgba(233,196,106,0.6), 0 0 80px rgba(233,196,106,0.3); }
+    100% { opacity: 1; transform: scale(1); text-shadow: 0 0 30px rgba(233,196,106,0.4), 0 0 60px rgba(233,196,106,0.15); }
+  }
+
+  .mentor-name::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .mentor-title {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 8px;
+    font-weight: 500;
+    opacity: 0;
+  }
+
+  .slide.active .mentor-title {
+    animation: fadeInUp 0.5s ease-out 3.2s forwards;
   }
 
   /* School badge at bottom right */
@@ -676,10 +761,13 @@
     align-items: center;
     justify-content: center;
     opacity: 0;
-    padding: 20px 28px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
+    padding: 40px 36px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    flex: 1;
+    min-height: 280px;
   }
 
   .slide.active .title-school {
@@ -687,7 +775,7 @@
   }
 
   .title-logo {
-    height: 120px;
+    height: 200px;
     width: auto;
     opacity: 0.85;
     filter: drop-shadow(0 2px 10px rgba(0,0,0,0.3));
@@ -1151,7 +1239,7 @@
     <div class="title-left">
       <div class="title-badge">
         <span class="badge-dot"></span>
-        Monmouth Scholarship Week 2026
+        Monmouth University Scholarship Week 2026
       </div>
 
       <h1 class="title-main">
@@ -1177,7 +1265,11 @@
         <div class="title-card-degree">M.S.Ed.</div>
         <div class="title-card-divider"></div>
         <div class="title-card-role">Graduate Assistant</div>
-        <div class="title-card-mentor">Under the mentorship of<br><strong>Dr. Shannon N. Clifford</strong><br>Acting Dean, SNHS</div>
+        <div class="title-card-mentor-section">
+          <div class="mentor-connection-line"><span>Mentored by</span></div>
+          <div class="mentor-name">Dr. Clifford</div>
+          <div class="mentor-title">Acting Dean, SNHS</div>
+        </div>
       </div>
 
       <div class="title-school">
@@ -1191,16 +1283,15 @@
 <div class="slide bg-dark" id="slide-2">
   <div class="two-col full-width" style="align-items: center; gap: 60px;">
     <div style="flex: 1; padding-left: 40px;">
-      <h2 class="animate-in" style="font-size: 2.5rem; color: rgba(255,255,255,0.5); text-align: left;">What if someone handed you</h2>
+      <h2 class="animate-in" style="font-size: 2.5rem; color: rgba(255,255,255,0.5); text-align: left;">It started with a conversation</h2>
       <h1 class="animate-in delay-1" style="font-size: 3.8rem; margin: 20px 0; text-align: left;">
-        a <span class="highlight">blank canvas</span>,<br>a budget, and said:
+        A <span class="highlight">shared vision</span>,<br>a mentor, and a plan
       </h1>
       <div class="quote-block animate-in delay-2" style="text-align: left;">
-        "Build a leadership program for 20-30 students.<br>
-        Design everything. Make it work."
+        Dr. Clifford shared her ideas for a student leadership program. We brainstormed events, surveyed students, and shaped the workshops together based on real feedback.
       </div>
       <p class="animate-in delay-3" style="margin-top: 30px; font-size: 1.6rem; text-align: left;">
-        That's exactly what happened to me.
+        With her guidance, I built it from the ground up.
       </p>
     </div>
     <div class="animate-in delay-2" style="flex: 1; display: flex; justify-content: center; padding-right: 40px;">
@@ -1218,7 +1309,7 @@
       <div class="accent-line animate-in delay-2"></div>
       <ul class="styled animate-in delay-3">
         <li><strong>Bingjun Li</strong> &mdash; M.S.Ed. Graduate Assistant</li>
-        <li>Assigned to SNHS under <strong>Dr. Shannon Clifford</strong></li>
+        <li>Assigned to SNHS under <strong>Dr. Clifford</strong></li>
         <li>Tasked with building the <strong>Student Ambassador Program</strong> from concept to reality</li>
         <li>Education background meeting healthcare leadership &mdash; a unique intersection</li>
       </ul>
@@ -1651,17 +1742,17 @@
   <div class="two-col full-width" style="align-items: center;">
     <div class="content-left" style="flex: 0.8;">
       <p class="subtitle animate-in">Workshop 1, November 18, 2025</p>
-      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">Transformational<br><span class="highlight">Leadership</span></h2>
+      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">Leadership &amp;<br><span class="highlight">Communication Skills</span></h2>
       <div class="accent-line animate-in delay-2"></div>
       <p class="animate-in delay-3" style="font-size: 1.7rem; line-height: 1.7; max-width: 500px;">
-        My first workshop ever, designed from scratch. The theme: <strong class="highlight">"Start With Why"</strong>, inspired by Simon Sinek. Teaching the <strong>Four I's</strong> of transformational leadership through interactive case studies and group discussion.
+        My first workshop ever, designed from scratch. Introduced different leadership styles through real world case studies, group discussions, and interactive activities to build communication skills.
       </p>
     </div>
     <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center;">
       <div class="ws-gallery">
         <div class="ws-photo"><img src="slide-images/ws1-01.png" alt="Workshop 1 Title"></div>
-        <div class="ws-photo"><img src="slide-images/ws1-03.png" alt="Start With Your Why"></div>
-        <div class="ws-photo"><img src="slide-images/ws1-05.png" alt="Transformational Leadership"></div>
+        <div class="ws-photo"><img src="slide-images/ws1-03.png" alt="Leadership Styles"></div>
+        <div class="ws-photo"><img src="slide-images/ws1-05.png" alt="Case Studies"></div>
         <div class="ws-photo"><img src="slide-images/ws1-09.png" alt="Group Activity"></div>
       </div>
       <p class="img-caption animate-in delay-5" style="text-align: center; margin-top: 12px;">Actual slides from Workshop 1</p>
@@ -1774,18 +1865,18 @@
   <div class="two-col full-width" style="align-items: center;">
     <div class="content-left" style="flex: 0.8;">
       <p class="subtitle animate-in">Workshop 2, December 2, 2025</p>
-      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">Democratic &amp;<br><span class="highlight">Adaptive Leadership</span></h2>
+      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">Transformational<br><span class="highlight">Leadership</span></h2>
       <div class="accent-line animate-in delay-2"></div>
       <p class="animate-in delay-3" style="font-size: 1.7rem; line-height: 1.7; max-width: 500px;">
-        A redesigned, discussion-driven workshop. Students shared personal leadership experiences, debated democratic vs. adaptive styles, and reflected on how they want to lead in healthcare settings.
+        A redesigned, discussion-driven workshop. Started with Simon Sinek's <strong class="highlight">"Start With Why"</strong>, asked students to reflect on their own why, and explored team dynamics through Patrick Lencioni's <strong>Five Dysfunctions of a Team</strong>.
       </p>
     </div>
     <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center;">
       <div class="ws-gallery">
-        <div class="ws-photo"><img src="slide-images/ws2-01.png" alt="Workshop 2 Title"></div>
-        <div class="ws-photo"><img src="slide-images/ws2-03.png" alt="Democratic Leadership"></div>
-        <div class="ws-photo"><img src="slide-images/ws2-06.png" alt="Adaptive Leadership"></div>
-        <div class="ws-photo"><img src="slide-images/ws2-09.png" alt="Group Discussion"></div>
+        <div class="ws-photo"><img src="slide-images/ws2-01.png" alt="Transformational Leadership Title"></div>
+        <div class="ws-photo"><img src="slide-images/ws2-03.png" alt="Start With Why, Simon Sinek"></div>
+        <div class="ws-photo"><img src="slide-images/ws2-04.png" alt="What Is Your Why?"></div>
+        <div class="ws-photo"><img src="slide-images/ws2-11.png" alt="Five Dysfunctions of a Team"></div>
       </div>
       <p class="img-caption animate-in delay-5" style="text-align: center; margin-top: 12px;">Actual slides from Workshop 2</p>
     </div>
@@ -1871,15 +1962,17 @@
     </div>
     <div>
       <div class="quote-block animate-in delay-3" style="font-size: 1.6rem; text-align: left;">
-        During our Transformational Leadership workshop, something shifted. Students didn't just listen,
-        they <strong>leaned in</strong>. They started sharing their own experiences, debating leadership styles,
-        giving each other honest feedback. The room came alive.
+        The students were engaged from the start, in both workshops. What really changed was <strong>me</strong>.
+        By the second workshop, I stopped anticipating their answers. I stopped planning how to respond before they finished speaking.
       </div>
       <p class="animate-in delay-4" style="margin-top: 24px; font-size: 1.6rem;">
-        That was the moment I realized: <span class="highlight">the curriculum wasn't just information, it was a catalyst for real conversation.</span>
+        I learned to <span class="highlight">truly listen</span>, to be present in the moment, and to let the conversation flow naturally instead of controlling it.
+      </p>
+      <p class="animate-in delay-4" style="margin-top: 16px; font-size: 1.6rem;">
+        That shift made all the difference. I became more engaged, more curious, and more connected to the students I was serving.
       </p>
       <div class="animate-in delay-5" style="margin-top: 24px; display: flex; gap: 16px; justify-content: center; align-items: center;">
-        <img src="slide-images/ws2-09.png" alt="Transformational Leader Case Study" style="width: 560px; border-radius: 10px; border: 2px solid rgba(233,196,106,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <img src="slide-images/ws2-09.png" alt="Case Study Discussion" style="width: 560px; border-radius: 10px; border: 2px solid rgba(233,196,106,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
         <img src="slide-images/ws2-10.png" alt="When Purpose Meets Reality" style="width: 560px; border-radius: 10px; border: 2px solid rgba(42,157,143,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
       </div>
       <p class="img-caption animate-in delay-5" style="margin-top: 8px; text-align: center;">Case study slides that sparked real debate</p>
@@ -2319,7 +2412,7 @@
     <div class="four-col" style="max-width: 1400px; margin: 0 auto;">
       <div class="thank-card" style="animation-delay: 0.8s; --card-accent: #e9c46a; --card-glow: rgba(233,196,106,0.3);">
         <span class="thank-icon" style="animation-delay: 0.3s;">&#x1F393;</span>
-        <h3 style="font-size: 1.7rem; color: #e9c46a;">Dr. Shannon Clifford</h3>
+        <h3 style="font-size: 1.7rem; color: #e9c46a;">Dr. Clifford</h3>
         <p style="font-size: 1.5rem; color: rgba(255,255,255,0.65);">Acting Dean &amp; Mentor<br>For believing in the vision and guiding me every step</p>
       </div>
 
@@ -2363,10 +2456,7 @@
     <div class="animate-in delay-3" style="margin-top: 20px;">
       <p style="font-size: 1.6rem; font-weight: 600;">Bingjun Li, M.S.Ed.</p>
       <p class="small-text">Graduate Assistant &middot; SNHS &middot; Monmouth University</p>
-      <p class="small-text">Mentored by Dr. Shannon N. Clifford, Acting Dean</p>
-    </div>
-    <div class="animate-in delay-4" style="margin-top: 36px;">
-      <p class="small-text" style="color: rgba(255,255,255,0.4);">snhsdean@monmouth.edu</p>
+      <p class="small-text">Mentored by Dr. Clifford, Acting Dean</p>
     </div>
   </div>
 </div>
