@@ -1251,11 +1251,63 @@
   }
 
   /* ===== RESPONSIVE ===== */
+
+  /* Scale everything proportionally to viewport */
+  .slide {
+    overflow: hidden;
+  }
+
+  /* Large screens (projectors, big monitors) */
+  @media (min-width: 1920px) {
+    html { font-size: 20px; }
+    .slide { padding: 50px 80px; }
+    .carousel3d, .carousel3d-s9 { width: 600px; height: 480px; }
+    .carousel3d-item, .carousel3d-s9 .carousel3d-item-s9 { width: 440px; height: 340px; margin-left: -220px; margin-top: -170px; }
+    .collision-container { width: 860px; height: 540px; }
+    .orb { width: 300px; height: 300px; }
+    .title-main { font-size: 6.5rem; }
+    .impact-grid { gap: 50px; }
+    .ring-container { width: 240px; height: 240px; }
+  }
+
+  /* Extra large screens (4K, auditorium) */
+  @media (min-width: 2560px) {
+    html { font-size: 24px; }
+    .slide { padding: 60px 100px; }
+    .carousel3d, .carousel3d-s9 { width: 700px; height: 560px; }
+    .carousel3d-item, .carousel3d-s9 .carousel3d-item-s9 { width: 520px; height: 400px; margin-left: -260px; margin-top: -200px; }
+    .collision-container { width: 960px; height: 600px; }
+    .orb { width: 340px; height: 340px; }
+    .ring-container { width: 280px; height: 280px; }
+  }
+
+  /* Smaller screens / laptops */
   @media (max-width: 1200px) {
-    .slide { padding: 40px 50px; }
+    html { font-size: 14px; }
+    .slide { padding: 30px 40px; }
     h1 { font-size: 3rem; }
     h2 { font-size: 2.5rem; }
-    .two-col { gap: 40px; }
+    .two-col { gap: 30px; }
+    .carousel3d, .carousel3d-s9 { width: 380px; height: 300px; }
+    .carousel3d-item, .carousel3d-s9 .carousel3d-item-s9 { width: 280px; height: 220px; margin-left: -140px; margin-top: -110px; }
+    .collision-container { width: 550px; height: 380px; }
+    .orb { width: 200px; height: 200px; }
+    .title-main { font-size: 4rem; }
+    .title-right { max-width: 500px; }
+    .impact-grid { gap: 24px; }
+    .ring-container { width: 150px; height: 150px; }
+    .ring-number { font-size: 3rem !important; }
+  }
+
+  /* Tablets / small laptops */
+  @media (max-width: 900px) {
+    html { font-size: 12px; }
+    .slide { padding: 20px 30px; }
+    .two-col { grid-template-columns: 1fr; gap: 20px; }
+    .three-col, .four-col { grid-template-columns: 1fr 1fr; }
+    .collision-container { width: 400px; height: 300px; }
+    .orb { width: 160px; height: 160px; }
+    .carousel3d, .carousel3d-s9 { width: 300px; height: 240px; }
   }
 </style>
 </head>
