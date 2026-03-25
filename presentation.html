@@ -1725,14 +1725,14 @@
   </div>
 </div>
 
-<!-- ============ SLIDE 6: WORKSHOP 1 ============ -->
+<!-- ============ SLIDE 6: WORKSHOPS (COMBINED) ============ -->
 <div class="slide bg-dark" id="slide-6">
   <style>
     .carousel3d {
       position: relative;
-      width: 500px;
-      height: 400px;
-      perspective: 1000px;
+      width: 380px;
+      height: 300px;
+      perspective: 800px;
     }
     .carousel3d-track {
       position: absolute;
@@ -1746,55 +1746,70 @@
     }
     .carousel3d-item {
       position: absolute;
-      width: 360px;
-      height: 280px;
+      width: 280px;
+      height: 210px;
       left: 50%;
       top: 50%;
-      margin-left: -180px;
-      margin-top: -140px;
-      border-radius: 16px;
+      margin-left: -140px;
+      margin-top: -105px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.5);
       border: 3px solid rgba(233,196,106,0.3);
       backface-visibility: hidden;
     }
     .carousel3d-item img {
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
-    /* Position each card around a Y-axis circle, radius ~300px */
-    .carousel3d-item:nth-child(1) { transform: rotateY(0deg) translateZ(300px); }
-    .carousel3d-item:nth-child(2) { transform: rotateY(90deg) translateZ(300px); }
-    .carousel3d-item:nth-child(3) { transform: rotateY(180deg) translateZ(300px); }
-    .carousel3d-item:nth-child(4) { transform: rotateY(270deg) translateZ(300px); }
-
-    /* Reflection/glow on the ground */
+    .carousel3d-item:nth-child(1) { transform: rotateY(0deg) translateZ(230px); }
+    .carousel3d-item:nth-child(2) { transform: rotateY(90deg) translateZ(230px); }
+    .carousel3d-item:nth-child(3) { transform: rotateY(180deg) translateZ(230px); }
+    .carousel3d-item:nth-child(4) { transform: rotateY(270deg) translateZ(230px); }
     .carousel3d::after {
       content: '';
       position: absolute;
-      bottom: -30px;
+      bottom: -20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 350px;
-      height: 40px;
+      width: 280px;
+      height: 30px;
       background: radial-gradient(ellipse, rgba(233,196,106,0.12) 0%, transparent 70%);
       border-radius: 50%;
       filter: blur(8px);
     }
   </style>
 
-  <div class="two-col full-width" style="align-items: center;">
-    <div class="content-left" style="flex: 0.8;">
+  <div class="two-col full-width" style="align-items: flex-start; gap: 40px;">
+    <!-- Workshop 1 (left) -->
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
       <p class="subtitle animate-in">Workshop 1, April 9, 2025</p>
-      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">Leadership &amp;<br><span class="highlight">Communication Skills</span></h2>
-      <div class="accent-line animate-in delay-2"></div>
+      <h2 class="animate-in delay-1" style="font-size: 2.6rem;">Leadership &amp;<br><span class="highlight">Communication Skills</span></h2>
+      <div class="accent-line animate-in delay-2" style="margin: 12px auto 20px auto;"></div>
+      <div class="animate-in delay-3">
+        <div class="carousel3d">
+          <div class="carousel3d-track">
+            <div class="carousel3d-item"><img src="slide-images/ws1-01.png" alt="Workshop 1 Title"></div>
+            <div class="carousel3d-item"><img src="slide-images/ws1-03.png" alt="Leadership Styles"></div>
+            <div class="carousel3d-item"><img src="slide-images/ws1-05.png" alt="Adaptive Leadership"></div>
+            <div class="carousel3d-item"><img src="slide-images/ws1-09.png" alt="Group Activity"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="animate-in delay-2" style="flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <div class="carousel3d">
-        <div class="carousel3d-track">
-          <div class="carousel3d-item"><img src="slide-images/ws1-01.png" alt="Workshop 1 Title"></div>
-          <div class="carousel3d-item"><img src="slide-images/ws1-03.png" alt="Leadership Styles"></div>
-          <div class="carousel3d-item"><img src="slide-images/ws1-05.png" alt="Adaptive Leadership"></div>
-          <div class="carousel3d-item"><img src="slide-images/ws1-09.png" alt="Group Activity"></div>
+
+    <!-- Workshop 2 (right) -->
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <p class="subtitle animate-in delay-1">Workshop 2, November 18, 2025</p>
+      <h2 class="animate-in delay-2" style="font-size: 2.6rem;">Transformational<br><span class="highlight-teal">Leadership</span></h2>
+      <div class="accent-line animate-in delay-3" style="margin: 12px auto 20px auto; background: linear-gradient(135deg, #2a9d8f, #e9c46a);"></div>
+      <div class="animate-in delay-4">
+        <div class="carousel3d-s9">
+          <div class="carousel3d-track-s9">
+            <div class="carousel3d-item-s9"><img src="slide-images/ws2-01.png" alt="Transformational Leadership Title"></div>
+            <div class="carousel3d-item-s9"><img src="slide-images/ws2-03.png" alt="Start With Why"></div>
+            <div class="carousel3d-item-s9"><img src="slide-images/ws2-04.png" alt="What Is Your Why?"></div>
+            <div class="carousel3d-item-s9"><img src="slide-images/ws2-11.png" alt="Five Dysfunctions"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1924,14 +1939,13 @@
 </div>
 
 
-<!-- ============ SLIDE 9: WORKSHOP 2 ============ -->
-<div class="slide bg-dark" id="slide-9">
-  <style>
+<!-- S9 removed — merged into S6 -->
+<style>
     .carousel3d-s9 {
       position: relative;
-      width: 500px;
-      height: 400px;
-      perspective: 1000px;
+      width: 380px;
+      height: 300px;
+      perspective: 800px;
     }
     .carousel3d-s9 .carousel3d-track-s9 {
       position: absolute;
@@ -1945,59 +1959,38 @@
     }
     .carousel3d-s9 .carousel3d-item-s9 {
       position: absolute;
-      width: 360px;
-      height: 280px;
+      width: 280px;
+      height: 210px;
       left: 50%;
       top: 50%;
-      margin-left: -180px;
-      margin-top: -140px;
-      border-radius: 16px;
+      margin-left: -140px;
+      margin-top: -105px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.5);
       border: 3px solid rgba(42,157,143,0.3);
       backface-visibility: hidden;
     }
     .carousel3d-s9 .carousel3d-item-s9 img {
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
-    .carousel3d-s9 .carousel3d-item-s9:nth-child(1) { transform: rotateY(0deg) translateZ(300px); }
-    .carousel3d-s9 .carousel3d-item-s9:nth-child(2) { transform: rotateY(90deg) translateZ(300px); }
-    .carousel3d-s9 .carousel3d-item-s9:nth-child(3) { transform: rotateY(180deg) translateZ(300px); }
-    .carousel3d-s9 .carousel3d-item-s9:nth-child(4) { transform: rotateY(270deg) translateZ(300px); }
-
+    .carousel3d-s9 .carousel3d-item-s9:nth-child(1) { transform: rotateY(0deg) translateZ(230px); }
+    .carousel3d-s9 .carousel3d-item-s9:nth-child(2) { transform: rotateY(90deg) translateZ(230px); }
+    .carousel3d-s9 .carousel3d-item-s9:nth-child(3) { transform: rotateY(180deg) translateZ(230px); }
+    .carousel3d-s9 .carousel3d-item-s9:nth-child(4) { transform: rotateY(270deg) translateZ(230px); }
     .carousel3d-s9::after {
       content: '';
       position: absolute;
-      bottom: -30px;
+      bottom: -20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 350px;
-      height: 40px;
+      width: 280px;
+      height: 30px;
       background: radial-gradient(ellipse, rgba(42,157,143,0.12) 0%, transparent 70%);
       border-radius: 50%;
       filter: blur(8px);
     }
-  </style>
-
-  <div class="two-col full-width" style="align-items: center;">
-    <div class="content-left" style="flex: 0.8;">
-      <p class="subtitle animate-in">Workshop 2, November 18, 2025</p>
-      <h2 class="animate-in delay-1" style="font-size: 3.6rem;">Transformational<br><span class="highlight">Leadership</span></h2>
-      <div class="accent-line animate-in delay-2"></div>
-    </div>
-    <div class="animate-in delay-2" style="flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <div class="carousel3d-s9">
-        <div class="carousel3d-track-s9">
-          <div class="carousel3d-item-s9"><img src="slide-images/ws2-01.png" alt="Transformational Leadership Title"></div>
-          <div class="carousel3d-item-s9"><img src="slide-images/ws2-03.png" alt="Start With Why, Simon Sinek"></div>
-          <div class="carousel3d-item-s9"><img src="slide-images/ws2-04.png" alt="What Is Your Why?"></div>
-          <div class="carousel3d-item-s9"><img src="slide-images/ws2-11.png" alt="Five Dysfunctions of a Team"></div>
-        </div>
-      </div>
-      <p class="img-caption animate-in delay-5" style="text-align: center; margin-top: 16px;">Actual slides from Workshop 2</p>
-    </div>
-  </div>
-</div>
+</style>
 
 <!-- ============ SLIDE 10: CHALLENGES ============ -->
 <div class="slide bg-warm" id="slide-10">
