@@ -1221,7 +1221,21 @@
     background: rgba(233,196,106,0.08);
   }
   .slide.active .hook-q1 { animation: questionPop 0.6s ease-out 0.8s forwards; }
-  .slide.active .hook-q2 { animation: questionPop 0.6s ease-out 1.4s forwards; }
+  .slide.active .hook-q2 { animation: questionPop 0.6s ease-out 1.6s forwards; }
+  .slide.active .hook-q3 { animation: questionPop 0.6s ease-out 2.4s forwards; }
+  @keyframes thinkPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  .hook-think {
+    display: inline-block;
+    font-size: 2.4rem;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+  .slide.active .hook-think {
+    animation: thinkPulse 2s ease-in-out infinite;
+  }
   .hook-hand {
     display: inline-block;
     font-size: 2.4rem;
@@ -1394,7 +1408,15 @@
     <div style="max-width: 950px; margin: 0 auto;">
       <div class="hook-question hook-q1">
         <span class="hook-hand">&#x270B;</span>
-        <strong>How many of you have had a student tell you they feel more comfortable seeking help from a peer rather than a faculty member?</strong>
+        <strong>If you've had a student say something like "I'm more comfortable asking another student for help than going to a professor or a faculty member"?</strong>
+      </div>
+      <div class="hook-question hook-q2">
+        <span class="hook-hand">&#x270B;</span>
+        <strong>If you've had any prospective students come to you while they were struggling with their transition?</strong>
+      </div>
+      <div class="hook-question hook-q3" style="border-left-color: var(--teal);">
+        <span class="hook-think">&#x1F4AD;</span>
+        <strong>How can institutions better support leadership development from the very beginning of a student's journey?</strong>
       </div>
     </div>
   </div>
