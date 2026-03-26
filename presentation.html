@@ -1939,7 +1939,21 @@
 
         <!-- Post Survey label with big swooping arrow -->
         <div class="animate-in delay-4" style="margin-top: 50px; position: relative;">
-          <h3 style="font-size: 2.4rem; color: var(--gold); font-weight: 800; margin: 0; font-family: 'Playfair Display', serif; text-align: center; line-height: 1.3;">
+          <style>
+            @keyframes s7-text-glow {
+              0%, 100% { text-shadow: 0 0 10px rgba(233,196,106,0.3), 0 0 20px rgba(233,196,106,0.1); }
+              50% { text-shadow: 0 0 20px rgba(233,196,106,0.6), 0 0 40px rgba(233,196,106,0.3), 0 0 60px rgba(233,196,106,0.1); }
+            }
+            @keyframes s7-text-enter {
+              0% { opacity: 0; transform: scale(0.8) translateY(20px); filter: blur(8px); }
+              60% { opacity: 1; transform: scale(1.05) translateY(-2px); filter: blur(0); }
+              100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+            }
+            .slide.active#slide-7 .s7-post-title {
+              animation: s7-text-enter 0.8s ease-out 1.2s forwards, s7-text-glow 3s ease-in-out 2s infinite;
+            }
+          </style>
+          <h3 class="s7-post-title" style="font-size: 2.4rem; color: var(--gold); font-weight: 800; margin: 0; font-family: 'Playfair Display', serif; text-align: center; line-height: 1.3; opacity: 0;">
             Post Survey from<br>Student Ambassadors
           </h3>
           <svg width="100%" height="160" viewBox="0 0 500 160" preserveAspectRatio="xMidYMid meet" style="overflow: visible; margin-top: 10px;">
