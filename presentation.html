@@ -1937,85 +1937,121 @@
           <p style="font-size: 1.5rem; color: #e9c46a; font-weight: 600;">Leadership &amp; Communication: 100% interest rate</p>
         </div>
 
-        <!-- Compact: Post Survey label + arrow -->
-        <div style="margin-top: 16px; display: flex; align-items: center; gap: 14px;">
-          <h3 style="font-size: 1.5rem; color: var(--gold); font-weight: 800; margin: 0; font-family: 'Playfair Display', serif; white-space: nowrap;">Post Survey Responses</h3>
-          <svg width="100" height="24" viewBox="0 0 100 24" style="flex-shrink: 0;">
+        <!-- Big Post Survey label + swooping arrow -->
+        <style>
+          @keyframes s7-text-enter {
+            0% { opacity: 0; transform: scale(0.6) translateY(30px) rotate(-3deg); filter: blur(10px); }
+            50% { opacity: 1; transform: scale(1.08) translateY(-4px) rotate(1deg); filter: blur(0); }
+            75% { transform: scale(0.98) translateY(2px) rotate(0deg); }
+            100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); filter: blur(0); }
+          }
+          @keyframes s7-text-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(233,196,106,0.3); }
+            50% { text-shadow: 0 0 25px rgba(233,196,106,0.6), 0 0 50px rgba(233,196,106,0.2); }
+          }
+          .slide.active#slide-7 .s7-post-title {
+            animation: s7-text-enter 1s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards, s7-text-glow 3s ease-in-out 2.5s infinite;
+          }
+          @keyframes s7-quote-reveal {
+            0% { opacity: 0; transform: translateX(-15px); clip-path: inset(0 100% 0 0); }
+            100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
+          }
+          @keyframes s7-cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+          }
+          .s7-quote-card {
+            opacity: 0;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            position: relative;
+          }
+          .s7-quote-card::after {
+            content: '|';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.6);
+            font-weight: 300;
+            font-size: 1.3rem;
+            animation: s7-cursor-blink 0.7s step-end infinite;
+            opacity: 0;
+          }
+          .slide.active#slide-7 .s7-q-label-1 { animation: s7-quote-reveal 0.4s ease-out 1.5s forwards; }
+          .slide.active#slide-7 .s7-tw-1 { animation: s7-quote-reveal 0.8s ease-out 1.8s forwards; }
+          .slide.active#slide-7 .s7-tw-1::after { opacity: 1; animation-delay: 1.8s; }
+          .slide.active#slide-7 .s7-tw-2 { animation: s7-quote-reveal 0.8s ease-out 2.8s forwards; }
+          .slide.active#slide-7 .s7-tw-2::after { opacity: 1; animation-delay: 2.8s; }
+          .slide.active#slide-7 .s7-q-label-2 { animation: s7-quote-reveal 0.4s ease-out 3.8s forwards; }
+          .slide.active#slide-7 .s7-tw-3 { animation: s7-quote-reveal 0.8s ease-out 4.2s forwards; }
+          .slide.active#slide-7 .s7-tw-3::after { opacity: 1; animation-delay: 4.2s; }
+          .slide.active#slide-7 .s7-tw-4 { animation: s7-quote-reveal 0.8s ease-out 5.2s forwards; }
+          .slide.active#slide-7 .s7-tw-4::after { opacity: 1; animation-delay: 5.2s; }
+          .slide.active#slide-7 .s7-tw-5 { animation: s7-quote-reveal 0.8s ease-out 6.2s forwards; }
+          .slide.active#slide-7 .s7-tw-5::after { opacity: 1; animation-delay: 6.2s; }
+        </style>
+        <div style="margin-top: 20px; position: relative;">
+          <svg width="100%" height="80" viewBox="0 0 500 80" preserveAspectRatio="xMidYMid meet" style="overflow: visible;">
             <defs>
-              <linearGradient id="arrow-grad" x1="0%" y1="50%" x2="100%" y2="50%">
-                <stop offset="0%" style="stop-color:#e9c46a"/><stop offset="100%" style="stop-color:#2a9d8f"/>
+              <linearGradient id="arrow-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#e9c46a"/>
+                <stop offset="100%" style="stop-color:#2a9d8f"/>
               </linearGradient>
+              <filter id="arrow-glow">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
             </defs>
-            <line x1="0" y1="12" x2="65" y2="12" stroke="url(#arrow-grad)" stroke-width="3" stroke-linecap="round"/>
-            <polygon points="60,3 85,12 60,21" fill="#2a9d8f"/>
+            <path d="M 40 65 Q 120 60, 220 40 Q 340 15, 440 18" fill="none" stroke="url(#arrow-grad)" stroke-width="5" stroke-linecap="round" filter="url(#arrow-glow)" stroke-dasharray="500" stroke-dashoffset="500">
+              <animate attributeName="stroke-dashoffset" from="500" to="0" dur="1s" begin="1.5s" fill="freeze"/>
+            </path>
+            <polygon points="430,5 465,18 430,31" fill="#2a9d8f" filter="url(#arrow-glow)" opacity="0">
+              <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="2.3s" fill="freeze"/>
+            </polygon>
+            <circle cx="40" cy="65" r="5" fill="#e9c46a" filter="url(#arrow-glow)" opacity="0">
+              <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.5s" fill="freeze"/>
+            </circle>
           </svg>
+          <h3 class="s7-post-title" style="font-size: 2.2rem; color: var(--gold); font-weight: 800; margin: 4px 0 0 0; font-family: 'Playfair Display', serif; text-align: center; line-height: 1.3; opacity: 0;">
+            Post Survey from<br>Student Ambassadors
+          </h3>
         </div>
       </div>
 
-      <!-- RIGHT: Typewriter Survey Responses -->
-      <style>
-        @keyframes s7-typewriter {
-          from { width: 0; }
-          to { width: 100%; }
-        }
-        @keyframes s7-blink-cursor {
-          0%, 100% { border-right-color: rgba(255,255,255,0.7); }
-          50% { border-right-color: transparent; }
-        }
-        @keyframes s7-quote-fade {
-          0% { opacity: 0; transform: translateY(10px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .s7-typewriter-wrap {
-          opacity: 0;
-        }
-        .s7-typewriter-text {
-          display: inline-block;
-          overflow: hidden;
-          white-space: nowrap;
-          border-right: 3px solid rgba(255,255,255,0.7);
-          font-size: 1.15rem;
-          color: white;
-          width: 0;
-        }
-        .s7-quote-body {
-          opacity: 0;
-          background: rgba(255,255,255,0.06);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 10px;
-          padding: 14px 18px;
-          margin-bottom: 10px;
-        }
-        /* Staggered animations when slide is active */
-        .slide.active#slide-7 .s7-q-label-1 { animation: s7-quote-fade 0.4s ease-out 1.2s forwards; }
-        .slide.active#slide-7 .s7-tw-1 { animation: s7-quote-fade 0.3s ease-out 1.5s forwards; }
-        .slide.active#slide-7 .s7-tw-1 .s7-typewriter-text { animation: s7-typewriter 2s steps(60) 1.6s forwards, s7-blink-cursor 0.8s step-end 1.6s 4; }
-        .slide.active#slide-7 .s7-tw-2 { animation: s7-quote-fade 0.3s ease-out 3.8s forwards; }
-        .slide.active#slide-7 .s7-tw-2 .s7-typewriter-text { animation: s7-typewriter 1.5s steps(45) 3.9s forwards, s7-blink-cursor 0.8s step-end 3.9s 3; }
-        .slide.active#slide-7 .s7-q-label-2 { animation: s7-quote-fade 0.4s ease-out 5.5s forwards; }
-        .slide.active#slide-7 .s7-tw-3 { animation: s7-quote-fade 0.3s ease-out 5.8s forwards; }
-        .slide.active#slide-7 .s7-tw-3 .s7-typewriter-text { animation: s7-typewriter 2.5s steps(80) 5.9s forwards, s7-blink-cursor 0.8s step-end 5.9s 5; }
-      </style>
-      <div style="display: flex; flex-direction: column; gap: 12px; justify-content: center;">
+      <!-- RIGHT: All 5 Survey Quotes with typewriter reveal -->
+      <div style="display: flex; flex-direction: column; gap: 8px; justify-content: flex-start;">
         <!-- Q1 label -->
-        <p class="s7-q-label-1" style="font-size: 1.15rem; color: var(--gold); font-weight: 700; margin: 0; opacity: 0; border-left: 3px solid var(--gold); padding-left: 12px;">Do you have any comments or suggestions?</p>
+        <p class="s7-q-label-1" style="font-size: 1.2rem; color: var(--gold); font-weight: 700; margin: 0; opacity: 0; border-left: 3px solid var(--gold); padding-left: 12px;">Do you have any comments or suggestions?</p>
 
-        <!-- Quote 1 - typewriter -->
-        <div class="s7-quote-body s7-tw-1">
-          <p class="s7-typewriter-text">&ldquo;B did great! It was an effective way of hearing how I could actually be a good leader.&rdquo;</p>
+        <!-- Quote 1 -->
+        <div class="s7-quote-card s7-tw-1">
+          <p style="font-size: 1.15rem; color: white; margin: 0;">&ldquo;B did great! It was an effective way of hearing how I could actually be a good leader. Good to see a little bit of Dr. Clifford&rsquo;s personality too.&rdquo;</p>
         </div>
 
-        <!-- Quote 2 - typewriter -->
-        <div class="s7-quote-body s7-tw-2">
-          <p class="s7-typewriter-text">&ldquo;I really loved this activity with the nursing ambassadors. I can&rsquo;t wait for future events!&rdquo;</p>
+        <!-- Quote 2 -->
+        <div class="s7-quote-card s7-tw-2">
+          <p style="font-size: 1.15rem; color: white; margin: 0;">&ldquo;No! I really loved this activity that we did with the nursing ambassadors. I can&rsquo;t wait to see what future events has in store for us.&rdquo;</p>
         </div>
 
         <!-- Q2 label -->
-        <p class="s7-q-label-2" style="font-size: 1.15rem; color: var(--teal); font-weight: 700; margin: 8px 0 0 0; opacity: 0; border-left: 3px solid var(--teal); padding-left: 12px;">What do you want to get out of the program?</p>
+        <p class="s7-q-label-2" style="font-size: 1.2rem; color: var(--teal); font-weight: 700; margin: 6px 0 0 0; opacity: 0; border-left: 3px solid var(--teal); padding-left: 12px;">What do you want to get out of the Student Ambassador program?</p>
 
-        <!-- Quote 3 - typewriter -->
-        <div class="s7-quote-body s7-tw-3">
-          <p class="s7-typewriter-text">&ldquo;I would like to gain confidence in public speaking and talking with families and faculty.&rdquo;</p>
+        <!-- Quote 3 -->
+        <div class="s7-quote-card s7-tw-3">
+          <p style="font-size: 1.15rem; color: white; margin: 0;">&ldquo;Anything to build my resume and help out our students :)&rdquo;</p>
+        </div>
+
+        <!-- Quote 4 -->
+        <div class="s7-quote-card s7-tw-4">
+          <p style="font-size: 1.05rem; color: white; margin: 0;">&ldquo;I hope that the student ambassador program enables me to make connections within the field, helps me develop strategies for improving the health outcomes of my future students, and boosts my chances of getting hired because of the leadership experience.&rdquo;</p>
+        </div>
+
+        <!-- Quote 5 -->
+        <div class="s7-quote-card s7-tw-5">
+          <p style="font-size: 1.05rem; color: white; margin: 0;">&ldquo;I would like to get a better communication style when working with a team of people. I would also like to gain the confidence in public speaking and talking with families, faculty, potential students, and fellow employees.&rdquo;</p>
         </div>
       </div>
     </div>
