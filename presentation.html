@@ -2942,12 +2942,9 @@
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
       e.preventDefault();
       updateSlide('prev');
-    } else if (e.key === 'f' || e.key === 'F') {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
+    } else if (e.key === 'f' || e.key === 'F' || e.key === 'F11') {
+      e.preventDefault();
+      toggleFullscreen();
     }
   });
 
@@ -2960,6 +2957,21 @@
   });
 
   // Touch support
+  // Cross-browser fullscreen
+  function toggleFullscreen() {
+    var el = document.documentElement;
+    var isFS = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+    if (!isFS) {
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    }
+  }
+
   let touchStartX = 0;
   document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
   document.addEventListener('touchend', (e) => {
@@ -2967,6 +2979,21 @@
     if (Math.abs(diff) > 50) {
       updateSlide(diff > 0 ? 'next' : 'prev');
     }
+  });
+
+  // Fullscreen button (visible, click to enter)
+  var fsBtn = document.createElement('div');
+  fsBtn.innerHTML = '&#x26F6; Fullscreen';
+  fsBtn.style.cssText = 'position:fixed;top:16px;right:24px;z-index:200;padding:8px 16px;background:rgba(233,196,106,0.2);border:1px solid rgba(233,196,106,0.4);border-radius:8px;color:#e9c46a;font-size:0.85rem;font-weight:600;cursor:pointer;transition:opacity 0.3s;font-family:Inter,sans-serif;';
+  fsBtn.onclick = function() { toggleFullscreen(); };
+  document.body.appendChild(fsBtn);
+
+  // Hide button when in fullscreen
+  document.addEventListener('fullscreenchange', function() {
+    fsBtn.style.display = document.fullscreenElement ? 'none' : 'block';
+  });
+  document.addEventListener('webkitfullscreenchange', function() {
+    fsBtn.style.display = document.webkitFullscreenElement ? 'none' : 'block';
   });
 </script>
 
