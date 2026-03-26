@@ -1937,24 +1937,43 @@
           <p style="font-size: 1.5rem; color: #e9c46a; font-weight: 600;">Leadership &amp; Communication: 100% interest rate</p>
         </div>
 
-        <!-- Post Survey label with arrow -->
-        <div class="animate-in delay-4" style="margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 16px;">
-          <h3 style="font-size: 2.2rem; color: var(--gold); font-weight: 800; margin: 0; font-family: 'Playfair Display', serif; text-align: center; line-height: 1.3;">
+        <!-- Post Survey label with big arrow -->
+        <div class="animate-in delay-4" style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+          <h3 style="font-size: 2.4rem; color: var(--gold); font-weight: 800; margin: 0; font-family: 'Playfair Display', serif; text-align: center; line-height: 1.3;">
             Post Survey from<br>Student Ambassadors
           </h3>
-          <svg width="80" height="50" viewBox="0 0 80 50" style="flex-shrink: 0;">
+          <svg width="260" height="80" viewBox="0 0 260 80" style="overflow: visible;">
             <defs>
               <linearGradient id="arrow-grad" x1="0%" y1="50%" x2="100%" y2="50%">
                 <stop offset="0%" style="stop-color:#e9c46a"/>
                 <stop offset="100%" style="stop-color:#2a9d8f"/>
               </linearGradient>
+              <filter id="arrow-glow">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
             </defs>
-            <line x1="0" y1="25" x2="55" y2="25" stroke="url(#arrow-grad)" stroke-width="4" stroke-linecap="round">
-              <animate attributeName="x2" from="0" to="55" dur="0.8s" begin="1.5s" fill="freeze"/>
-            </line>
-            <polygon points="50,12 72,25 50,38" fill="#2a9d8f" opacity="0">
-              <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="2s" fill="freeze"/>
+            <!-- Curved arrow body -->
+            <path d="M 20 55 Q 80 55, 120 40 Q 160 25, 210 25" fill="none" stroke="url(#arrow-grad)" stroke-width="6" stroke-linecap="round" filter="url(#arrow-glow)" stroke-dasharray="250" stroke-dashoffset="250">
+              <animate attributeName="stroke-dashoffset" from="250" to="0" dur="1s" begin="1.5s" fill="freeze"/>
+            </path>
+            <!-- Arrow head -->
+            <polygon points="205,10 240,25 205,40" fill="#2a9d8f" filter="url(#arrow-glow)" opacity="0">
+              <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.3s" fill="freeze"/>
             </polygon>
+            <!-- Decorative dots along path -->
+            <circle cx="20" cy="55" r="5" fill="#e9c46a" opacity="0">
+              <animate attributeName="opacity" from="0" to="0.8" dur="0.3s" begin="1.5s" fill="freeze"/>
+            </circle>
+            <circle cx="70" cy="50" r="3" fill="#d4a84a" opacity="0">
+              <animate attributeName="opacity" from="0" to="0.5" dur="0.3s" begin="1.8s" fill="freeze"/>
+            </circle>
+            <circle cx="120" cy="40" r="3" fill="#5aaf9a" opacity="0">
+              <animate attributeName="opacity" from="0" to="0.5" dur="0.3s" begin="2.0s" fill="freeze"/>
+            </circle>
+            <circle cx="170" cy="30" r="3" fill="#2a9d8f" opacity="0">
+              <animate attributeName="opacity" from="0" to="0.5" dur="0.3s" begin="2.1s" fill="freeze"/>
+            </circle>
           </svg>
         </div>
       </div>
